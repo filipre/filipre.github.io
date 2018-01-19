@@ -32,7 +32,11 @@ minima:
 
 # Build settings
 markdown: kramdown
+kramdown:
+  smart_quotes: ["apos", "apos", "quot", "quot"]
+
 theme: minima
+
 exclude:
   - Gemfile
   - Gemfile.lock
