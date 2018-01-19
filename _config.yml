@@ -35,6 +35,10 @@ markdown: kramdown
 kramdown:
   smart_quotes: ["apos", "apos", "quot", "quot"]
 
+plugins:
+  - jemoji
+  - jekyll-youtube
+
 theme: minima
 
 exclude:
