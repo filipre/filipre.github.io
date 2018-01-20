@@ -20,6 +20,7 @@ rss: rss
 google_analytics: ENV_GOOGLE_ANALYTICS
 disqus:
   shortname: renes-blog
+url: https://filipre.github.io
 
 # Minima date format
 # refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
