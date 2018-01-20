@@ -1,36 +1,112 @@
 ---
 layout: post
-title:  "Video Poker Royal Flush"
+title:  "How Likely is a Royal Flush in GTA's Video Poker?"
 date:   2018-01-19 21:24:00 +0900
 published: true
 ---
 
-What are the odds?
+**tl;dr version below**
 
-TODO: Introduction
+Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has a quite interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to archieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
+
+Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide, which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here:
 
 {% youtube "https://youtu.be/NU8m18HO35o?start=1468" %}
+<br>
 
-...
-
+I wondered, how much does he have to play to get a Royal Flush? How likely (in terms of probability) is it if he uses the best strategy?
 
 ## tl;dr
 
-|Event|$$p(R)$$|Expectation $$\mathbb{E} N(p(R))$$|Epirical Result|
-|-------|----|----------------------------------|---------------|
-|$$R$$: Any Royal Flush|0.004 %|23081|...|
+By using the best strategy, the probability of getting any royal flush is about **0.004 %** which means, *it's expected* that he plays around **23081** games of video poker.
+
+Furthermore, we can provide the amount of games needed for getting a Royal Flush with a certain probability. For example: It's 50 % likely that Joshimuz gets a Royal Flush if he plays 15998 games.
+
+|p|n|
+|-|-|
+|1 %|232
+|10 %|2432
+|25 %|6640
+|50 %|15998
+|75 %|31996
+|90 %|53144
+|99 %|106288
+
+If you are interested on how to get to these results, read on!
 
 ## Video Poker
 
-...
+Video poker uses a standard deck of 52 cards, i.e. the lowest cards are **2** :clubs:, **2** :spades:, **2** :hearts:, **2** :diamonds: and the highest cards are **A** :clubs:, **A** :spades:, **A** :hearts:, **A** :diamonds:. A Royal Flush is the highest street possible in the same suit. Therefore, there are four possible Royal Flushes, namely:
+
+- **10** :clubs:, **B** :clubs:, **D** :clubs:, **K** :clubs:, **A** :clubs:
+- **10** :spades:, **B** :spades:, **D** :spades:, **K** :spades:, **A** :spades:
+- **10** :hearts:, **B** :hearts:, **D** :hearts:, **K** :hearts:, **A** :hearts:
+- **10** :diamonds:, **B** :diamonds:, **D** :diamonds:, **K** :diamonds:, **A** :diamonds:
+
+We will call these cards "potential cards".
+
+For every video poker game, the player receives 5 random cards from the deck. He then can choose what he thinks are the best cards to keep and which cards should be thrown away. After that, the player receives new cards until he has 5 again and the dealer (i.e. the slot machine) evaluates the highest hand. We are not interested in getting any other winning hand like a "Full House" or "Three of a Kind".
+
+Notice that you can also adjust your wagger and that there are many varieties of video poker but this not really interesting to us.
 
 ## Best Strategy
 
-TODO
+It is quite obvious that the best strategy for getting a Royal Flush is to keep potential cards (listed above) and to throw useless ones away. Sometimes, there are multiple potential cards but in different suits. Again, it's very easy to see that we should keep the suit that has more potential cards in that colour then the other. If the number is equal (for example if we have a hand like **10** :hearts:, **B** :hearts:, **K** :clubs:, **A** :clubs:, **5** :hearts:) then it does not matter, if we keep :hearts: or :clubs: because both Royal Flushes come with the same probability.
 
-## Theoretical Result
+In this post, we are not going to formally prove that this greedy strategy maximises our chances but I believe it should not be [too](https://web.stanford.edu/class/archive/cs/cs161/cs161.1138/handouts/120%20Guide%20to%20Greedy%20Algorithms.pdf) [hard](http://www.cs.cornell.edu/courses/cs482/2003su/handouts/greedy_exchange.pdf).
 
-Short intro into Probability theory
+You can take a look at the implementation of this strategy in the `holdCards(hand)` method below.
+
+## Calculation of the Probability
+
+Let $$R$$ denote the [event](https://en.wikipedia.org/wiki/Event_(probability_theory)) of a Royal Flush and $$\Omega$$ denote the set of all possible outcomes of drawing 5 cards from a standard deck. From the section above it's clear that there are $$\vert R\vert = 4$$ possible Royal Flushes. If we know the size of our sample space $$\Omega$$, i.e. how many ways there are to sample 5 cards from a 52 deck, we can easily calculate the probability by utilising this formula:
+
+$$ \Pr(\text{event}) = \frac{\text{number of outcomes in event}}{\text{number of outcomes in sample space}} $$
+
+Luckily, there exists the [Binomial Coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient) $$\binom{n}{k}$$ that gives us the number of possibilities of choosing $$k$$ elements from a set of size $$n$$ without respecting the order. Here, we have $$n = 52$$ cards and we choose $$k = 5$$ cards from them. By employing the formula above we get
+
+$$ \Pr(R) = \frac{|R|}{|\Omega|} = \frac{4}{\binom{52}{5}} = \frac{1}{649740} \approx 0.00015\% $$
+
+However, our problem is a bit more complicated because we completely neglected that we can optimise our chances by keeping potential cards. So far we only calculated the probability of getting a Royal Flush when we are not allowed to keep cards. From now, $$R$$ will refer to the *actual* problem and not to the simpler one above.
+
+### Law of Total Probability, Random Variables, and more
+
+As it turns out, we need to divide our event $$R$$ into smaller disjoint subsets. The intuition behind doing this is that it is much more likely to get a Royal Flush if the player keeps 4 potential cards in the same suit than keeping only one or two. However, drawing 4 potential cards in the same suit in the first place is much less likely than getting maybe only one. By splitting up $$R$$ we can exactly describe this observation mathematically. This trick is known as the [Law of total probability](https://en.wikipedia.org/wiki/Law_of_total_probability):
+
+$$ \Pr(A) = \sum_n \Pr(B_n) \cdot \Pr(A \;\vert\; B_n) $$
+
+I will shortly explain what the bar inside $$\Pr(A \;\vert\; B_n)$$ means but first, we also have to change our notation a bit by using [Random Variables](https://en.wikipedia.org/wiki/Random_variable). A Random Variable is usually a function $$X\colon \Omega \to \mathbb{R}$$ that maps events to natural numbers. That way, we can describe more easily events and work with them. Let $$X$$ be a Random Variable that denotes the number of cards a player exactly kept by using the described strategy. It's clear that the kept cards are all equal or above the rank **10** and all have the same suit. For example, to refer to the probability of getting a Royal Flush *if the player already holds 3 cards* we write
+
+$$\Pr(R\;\vert\;X=3)$$
+
+Probabilities that come with a *condition* are called [Conditional Probabilities](https://en.wikipedia.org/wiki/Conditional_probability) where the condition is written after the bar $$\vert$$. Here we used the notation involving the Random Variable $$X$$. If we want to refer to the probability of being able to keep three cards in the first place, we would write
+
+$$\Pr(X=3)$$
+
+Notice that it means something completely different. It should not be too hard to see that
+
+$$0 < \Pr(R\;\vert\;X=0) < \Pr(R\;\vert\;X=1) < \dotsb < \Pr(R\;\vert\;X=5) = 1$$
+
+but
+
+$$1 > \Pr(X=0) > \Pr(X=1) > \dotsb > \Pr(X=5) > 0$$
+
+Since we said that $$X$$ *exactly* represents the number of kept cards in a game, the associated events are disjoint and we can apply the Law of Total Probability:
+
+$$\Pr(R) = \sum_{x=0}^5 \Pr(X=x) \cdot \Pr(R \;\vert\; X=x)$$
+
+So if we find out how to calculate $$\Pr(X=x)$$ and $$\Pr(R \;\vert\; X=x)$$ for a given $$x$$, we are done! We will start with the easier factor $$\Pr(R \;\vert\; X=x)$$.
+
+### Suppose we already hold $$x$$ cards...
+
+asdfasdfaaaaaaa
+
+$$p(R \;\vert\; X=x) = \begin{cases}
+   4 \cdot \binom{52-5}{5} &\text{if } x=0 \\
+   1 \cdot \binom{52-5}{5-x} &\text{otherwise}
+\end{cases} $$
+
+adsfadfs
 
 $$ p(R) = \sum_{\scriptstyle a+b+c+d \le 5\atop\scriptstyle 0 \le a \le b \le c \le d} p(A=a, B=b, C=c, D=d) \cdot p(R \;\vert\; A=a, B=b, C=c, D=d) $$
 
@@ -132,6 +208,12 @@ Explain Expectation: https://math.stackexchange.com/questions/42930/what-is-the-
 
 ...
 
+### TODO
+
+$$p = 1 - (1-\Pr(R))^n \Rightarrow 1-p = (1-\Pr(R))^n \Rightarrow \ln{(1-p)} = n * \ln{(1-\Pr(R))}$$
+
+$$ n = \frac{\ln(1-p)}{\ln(1-\Pr(R))} $$
+
 ## Empirical Validation
 
 python... github...
@@ -204,3 +286,6 @@ def runSimulation(n = 100, numCores = multiprocessing.cpu_count()):
 
 runSimulation(n = 10000)
 ```
+
+**Time**: 4h
+**Result**: 24029.4672
