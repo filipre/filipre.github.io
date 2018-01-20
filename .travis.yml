@@ -4,7 +4,11 @@ sudo: false
 rvm: 2.2
 
 install: script/bootstrap
-script: script/build
+
+script:
+  - script/build
+  - script/test
+
 deploy:
   provider: pages
   local-dir: _site
