@@ -1,15 +1,12 @@
 ---
 layout: post
-title:  "How Likely is a Royal Flush in GTA's Video Poker?"
-date:   2018-01-19 21:24:00 +0900
-published: true
+title: "How Likely is a Royal Flush in GTA's Video Poker?"
+date: 2018-01-21 22:50:00 +0900
 ---
-
-**tl;dr version below**
 
 Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
 
-Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide, which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here:
+Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide, which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here at timestep 24:28:
 
 {% youtube "https://youtu.be/NU8m18HO35o?start=1468" %}
 <br>
@@ -18,7 +15,7 @@ I wondered, how much does he have to play to get a Royal Flush? How likely (in t
 
 ## tl;dr
 
-By using the best strategy, the probability of getting any royal flush is about **0.004 %** which means, *it's expected* that he plays around **23081** games of video poker.
+By using the best strategy, the probability of getting a Royal Flush is about **0.004 %** which means, *it's expected* that he plays around **23081** games of video poker.
 
 Furthermore, we can provide the amount of games needed for getting a Royal Flush with a certain probability. For example: It's 50 % likely that Joshimuz gets a Royal Flush if he plays 15998 games. On the other hand, there is a 1 % chance that he might not get a Royal Flush even after 106288 games. RIP.
 
@@ -32,7 +29,7 @@ Furthermore, we can provide the amount of games needed for getting a Royal Flush
 |90 %|53144
 |99 %|106288
 
-If you are interested on how to get to these results, read on!
+If you are interested on how to derive these results, read on!
 
 ## Video Poker
 
@@ -45,17 +42,15 @@ Video poker uses a standard deck of 52 cards, i.e. the lowest cards are **2** :c
 
 We will call these cards "potential cards".
 
-For every video poker game, the player receives 5 random cards from the deck. He then can choose what he thinks are the best cards to keep and which cards should be thrown away. After that, the player receives new cards until he has 5 again and the dealer (i.e. the slot machine) evaluates the highest hand. We are not interested in getting any other winning hand like a "Full House" or "Three of a Kind".
-
-Notice that you can also adjust your wagger and that there are many varieties of video poker but this not really interesting to us.
+For every video poker game, the player receives 5 random cards from the deck. He then can choose what he thinks are the best cards to keep and which cards should be thrown away. After that, the player receives new cards until he has 5 again and the dealer (i.e. the slot machine) evaluates the highest hand. In this problem we are not interested in getting any other winning hand like a "Full House" or "Three of a Kind". Notice that you can also adjust your wagger and that there are many varieties of video poker but this not really interesting to us either.
 
 ## Best Strategy
 
-It is quite obvious that the best strategy for getting a Royal Flush is to keep potential cards (listed above) and to throw useless ones away. Sometimes, there are multiple potential cards but in different suits. Again, it's very easy to see that we should keep the suit that has more potential cards in that colour then the other. If the number is equal (for example if we have a hand like **10** :hearts:, **B** :hearts:, **K** :clubs:, **A** :clubs:, **5** :hearts:) then it does not matter, if we keep :hearts: or :clubs: because both Royal Flushes come with the same probability.
+It is quite obvious that the best strategy for getting a Royal Flush is to keep potential cards (listed above) and to throw useless ones away. Sometimes, there are multiple potential cards but in different suits. Again, it's very easy to see that we should keep the suit that has more potential cards in that suit then the other. If the number is equal (for example if we have a hand like **10** :hearts: **B** :hearts: **K** :clubs: **A** :clubs: **5** :hearts:) then it does not matter if we keep :hearts: or :clubs: because both Royal Flushes come with the same probability.
 
 In this post, we are not going to formally prove that this greedy strategy maximises our chances but I believe it should not be [too](https://web.stanford.edu/class/archive/cs/cs161/cs161.1138/handouts/120%20Guide%20to%20Greedy%20Algorithms.pdf) [hard](http://www.cs.cornell.edu/courses/cs482/2003su/handouts/greedy_exchange.pdf).
 
-You can take a look at the implementation of this strategy in the `holdCards(hand)` method below.
+You can take a look at the implementation of this strategy in the `holdCards(hand)` method at the very end.
 
 ## Calculation of the Probability
 
@@ -67,15 +62,15 @@ Luckily, there exists the [Binomial Coefficient](https://en.wikipedia.org/wiki/B
 
 $$ \Pr(R) = \frac{|R|}{|\Omega|} = \frac{4}{\binom{52}{5}} = \frac{1}{649740} \approx 0.00015\% $$
 
-However, our problem is a bit more complicated because we completely neglected that we can optimise our chances by keeping potential cards. So far we only calculated the probability of getting a Royal Flush when we are not allowed to keep cards. From now, $$R$$ will refer to the *actual* problem and not to the simpler one above.
+However, our problem is a bit more complicated because we completely neglected that we can optimise our chances by keeping potential cards. So far we only calculated the probability of getting a Royal Flush when we are not allowed to keep cards. From now, $$R$$ will refer to the *actual* problem and not to this simple one.
 
-### Law of Total Probability, Random Variables, and more
+### Law of Total Probability, Random Variables, ...
 
 As it turns out, we need to divide our event $$R$$ into smaller disjoint subsets. The intuition behind doing that is that it is much more likely to get a Royal Flush if the player keeps 4 potential cards in the same suit than keeping only one or two. However, drawing 4 potential cards in the same suit in the first place is much less likely than getting maybe only one. By splitting up $$R$$ we can exactly describe this observation mathematically. This trick is known as the [Law of total probability](https://en.wikipedia.org/wiki/Law_of_total_probability):
 
 $$ \Pr(A) = \sum_n \Pr(B_n) \cdot \Pr(A \;\vert\; B_n) $$
 
-I will shortly explain what the bar inside $$\Pr(A \;\vert\; B_n)$$ means but first, we also have to change our notation a bit by using [Random Variables](https://en.wikipedia.org/wiki/Random_variable). A Random Variable is usually a function $$X\colon \Omega \to \mathbb{R}$$ that maps events to natural numbers. That way, we can describe events more easily and work with them. Let $$X$$ be a Random Variable that denotes the number of cards a player exactly kept by using the described strategy. It's clear that the kept cards are all equal or above the rank **10** and all have the same suit. In addition, $$X$$ can only take values between 0 (not keeping any cards) and 5 (keeping all cards, aka. a Royal Flush). To refer to the probability of getting a Royal Flush *if the player already holds 3 cards*, we write
+I will shortly explain what the bar inside $$\Pr(A \;\vert\; B_n)$$ means, but first, we also have to change our notation a bit by using [Random Variables](https://en.wikipedia.org/wiki/Random_variable). A Random Variable is usually a function $$X\colon \Omega \to \mathbb{R}$$ that maps events to natural numbers. That way, we can describe events more easily and work with them. Let $$X$$ be a Random Variable that denotes the number of cards a player exactly kept by using the described strategy. It's clear that the kept cards are all equal or above the rank **10** and all have the same suit. In addition, $$X$$ can only take values between 0 (not keeping any cards) and 5 (keeping all cards, aka. a Royal Flush). To refer to the probability of getting a Royal Flush *if the player already holds 3 cards*, we write
 
 $$\Pr(R\;\vert\;X=3)$$
 
@@ -123,7 +118,7 @@ It's important that this outcome only *counts* when $$x = 3$$ and not $$x = 2$$.
 
 Instead, we split up $$R$$ now a bit differently to be able to use a more systematic approach. Let $$X$$ still be the Random Variable that keeps track of the number of cards a player wants to hold. Now, let $$A$$ be a Random Variable that notes the number of potential cards in the current hand *of a different suit* than the cards being tracked by $$X$$. In the hand above, we would have an event where $$X=3$$ and $$A=2$$. Let $$B$$ and $$C$$ be Random Variables too, where the former represents the third different suit and the latter represents the fourth different suit. Since the hand above does not have a third or fourth suit, we simply have $$B=0$$ and $$C=0$$. Also notice the number of non-potential cards is $$5-X-A-B-C$$, i.e. simply the rest.
 
-By using only $$X$$, $$A$$, $$B$$ and $$C$$ we can describe any relevant event for us but first, we must enforce additional constraints to make all events disjoint: First, we must not exceed 5 cards on a hand and second, there must be an ordering of the Random Variables because we have to make sure that we do not get accidentally a better hand by not saving $$X$$ cards.
+By using only $$X$$, $$A$$, $$B$$ and $$C$$ we can describe any relevant event for us, but first, we must enforce additional constraints to make all events disjoint: First, we must not exceed 5 cards on a hand and second, there must be an ordering of the Random Variables because we have to make sure that we do not get accidentally a better hand by not saving $$X$$ cards.
 
 1. Constraint: $$X+A+B+C \le 5$$
 2. Constraint: $$X \ge A \ge B \ge C \ge 0$$
@@ -173,21 +168,21 @@ Sadly (luckily?), our Random Variables can track any suit and it only matters, t
 
 $$ \Pr(X=x, A=a, B=b, C=c) = \frac{ s(x, a, b, c) \cdot r(x, a, b, c)}{\binom{52}{5}} $$
 
-Finding a nice term for $$s(x, a, b, c)$$ is a bit more tricky, but there are some observations: At first, we have four different possibilities to assign a suit to $$X$$. Because $$A$$ has to be a different suit than $$X$$, there are only three possibilities left. The same applies for $$B$$ and once we assigned suits to $$X$$, $$A$$ and $$B$$ already, there is only one possibility left for $$C$$. If our event consists of only two suits, we simply neglect the possibilities for the other two suits. Here, $$H(x)$$ is a "left-continuous" [Heaviside step function](https://en.wikipedia.org/wiki/Heaviside_step_function) that is $$0$$ if $$x$$ is $$0$$ and is $$1$$ if $$x>0$$.
+Finding a nice term for $$s(x, a, b, c)$$ is a bit more tricky, but there are some observations: At first, we have four different possibilities to assign a suit to $$X$$. Because $$A$$ has to be a different suit than $$X$$, there are only three possibilities left. The same applies for $$B$$ and once we assigned suits to $$X$$, $$A$$ and $$B$$ already, there is only one possibility left for $$C$$. If our event consists of only two suits, we simply neglect the possibilities for the other two suits. In the equation below, $$H(x)$$ is a "left-continuous" [Heaviside step function](https://en.wikipedia.org/wiki/Heaviside_step_function) that is $$0$$ if $$x$$ is $$0$$ and is $$1$$ if $$x>0$$.
 
 $$ s(x, a, b, c) = \frac{4^{H(x)} \cdot 3^{H(a)} \cdot 2^{H(b)} \cdot 1^{H(c)}}{g(x, a, b, c)} $$
 
-So what is the $$g(x, a, b, c)$$ doing? You might have noticed the enumerator *sometimes* counts suit combinations twice or more times but *sometimes* does not. On the one hand, the event $$X=2, A=1, B=0, C=0$$ has following combinations:
+So what is $$g(x, a, b, c)$$ doing? You might have noticed the enumerator *sometimes* counts suit combinations twice or more times but *sometimes* does not. On the one hand, the event $$X=2, A=1, B=0, C=0$$ has following combinations:
 
-:clubs: :clubs: :spades:, :clubs: :clubs: :hearts:, :clubs: :clubs: :diamonds:, :spades: :spades: :clubs:, :spades: :spades: :hearts:, :spades: :spades: :diamonds:, :hearts: :hearts: :clubs:, :hearts: :hearts: :spades:, :hearts: :hearts: :diamonds:, :diamonds: :diamonds: :clubs:, :diamonds: :diamonds: :spades:, :diamonds: :diamonds: :hearts:
+**[** :clubs: :clubs: :spades: **]**, **[** :clubs: :clubs: :hearts: **]**, **[** :clubs: :clubs: :diamonds: **]**, **[** :spades: :spades: :clubs: **]**, **[** :spades: :spades: :hearts: **]**, **[** :spades: :spades: :diamonds: **]**, **[** :hearts: :hearts: :clubs: **]**, **[** :hearts: :hearts: :spades: **]**, **[** :hearts: :hearts: :diamonds: **]**, **[** :diamonds: :diamonds: :clubs: **]**, **[** :diamonds: :diamonds: :spades: **]**, **[** :diamonds: :diamonds: :hearts: **]**
 
 On the other hand, the event $$X=1, A=1, B=0, C=0$$ has much fewer:
 
-:clubs: :spades:, :clubs: :hearts:, :clubs: :diamonds:, :spades: :hearts:, :spades: :diamonds:, :hearts: :diamonds:
+**[** :clubs: :spades: **]**, **[** :clubs: :hearts: **]**, **[** :clubs: :diamonds: **]**, **[** :spades: :hearts: **]**, **[** :spades: :diamonds: **]**, **[** :hearts: :diamonds: **]**
 
 If two/three/four Random Variables share the same number as others and are at least $$1$$ (here: $$A = X = 1$$), we need to remove additional counted outcomes due to permutations. We do this by using [factorials](https://en.wikipedia.org/wiki/Factorial). $$n!$$ is the number of ways how to permute $$n$$ elements. For instance $$n=3$$, we would get $$n! = 3 \cdot 2 \cdot 1 = 6$$ different ways to permute three suits:
 
-:clubs: :spades: :hearts:, :clubs: :hearts: :spades:, :spades: :clubs: :hearts:, :spades: :hearts: :clubs:, :hearts: :clubs: :spades:, :hearts: :spades: :clubs:
+**[** :clubs: :spades: :hearts: **]**, **[** :clubs: :hearts: :spades: **]**, **[** :spades: :clubs: :hearts: **]**, **[** :spades: :hearts: :clubs: **]**, **[** :hearts: :clubs: :spades: **]**, **[** :hearts: :spades: :clubs: **]**
 <!--
 **[** :clubs: :spades: :hearts: **]**, **[** :clubs: :hearts: :spades: **]**, **[** :spades: :clubs: :hearts: **]**, **[** :spades: :hearts: :clubs: **]**, **[** :hearts: :clubs: :spades: **]**, **[** :hearts: :spades: :clubs: **]**
 -->
@@ -269,25 +264,39 @@ These are my results
 |:diamonds: :diamonds: :diamonds: :diamonds: :diamonds:|5|0.0002 %|100 %|
 |**Sum**||100 %||
 
-more text. Again $$\sum_{d=0}^5 p(D=d) = 1$$
+Finally, by using Law of Total Probability:
 
-Explain Expectation: https://math.stackexchange.com/questions/42930/what-is-the-expected-value-of-the-number-of-die-rolls-necessary-to-get-a-specifi
+$$ \Pr(R) = \sum_{x=0}^5 \Pr(X=x) \cdot \Pr(R \;\vert\; X=x) \approx \frac{1}{23081} \approx 0.004 \% $$
 
-|Event|$$\Pr(R)$$|Expectation $$\mathbb{E} N(\Pr(R))$$|
-|-------|----|----------------------------------|
-|$$R$$: Any Royal Flush|0.004 %|23081|
+### Number of expected games and more
 
-...
+Let $$E$$ denote the expected number of games we need to play until we get a Royal Flush. If we get one, we stop. Otherwise we try again. Read [this](https://math.stackexchange.com/questions/42930/what-is-the-expected-value-of-the-number-of-die-rolls-necessary-to-get-a-specifi) for details.
 
-### TODO
+$$ E = 1 + \frac{23080}{23081} \cdot E \Rightarrow E = 23081$$
 
-$$p = 1 - (1-\Pr(R))^n \Rightarrow 1-p = (1-\Pr(R))^n \Rightarrow \ln{(1-p)} = n \ln{(1-\Pr(R))}$$
+This does not tell us that much because it rather means, *on average* we need 23081 games. However, I am pretty sure we don't want to get Royal Flushes a second or third time. There is something else we can do: We could provide a probability on how likely it is that we get a Royal Flush in the first $$n$$ tries.
 
-$$ n = \frac{\ln(1-p)}{\ln(1-\Pr(R))} $$
+With the help of [complementary events](https://en.wikipedia.org/wiki/Complementary_event) we solve for $$n$$:
+
+$$p = 1 - (1-\Pr(R))^n \Leftrightarrow 1-p = (1-\Pr(R))^n \Leftrightarrow \ln{(1-p)} = n \ln{(1-\Pr(R))}$$
+
+$$ \Leftrightarrow n = \frac{\ln(1-p)}{\ln(1-\Pr(R))} $$
+
+I think this table describes much better how much effort Josh might have to put into his project.
+
+|p|n|
+|-|-|
+|1 %|232
+|10 %|2432
+|25 %|6640
+|50 %|15998
+|75 %|31996
+|90 %|53144
+|99 %|106288
 
 ## Empirical Validation
 
-python... github...
+To confirm the theory, I wrote a small Python script that simulates getting a Royal Flush 10000 times. After 4h on my MacBook, the result was **24029** tries on average, which is not too far away from 23081. You can find the code below:
 
 ```python
 from pcards import Deck, Card
@@ -357,6 +366,3 @@ def runSimulation(n = 100, numCores = multiprocessing.cpu_count()):
 
 runSimulation(n = 10000)
 ```
-
-**Time**: 4h
-**Result**: 24029.4672
