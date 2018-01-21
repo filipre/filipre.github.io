@@ -17,7 +17,7 @@ social_sites:
   #googleplus: +jekyll
 
 rss: rss
-google_analytics: ENV_GOOGLE_ANALYTICS
+google_analytics: UA-112738899-1
 disqus-shortname: renes-blog
 
 # Minima date format
