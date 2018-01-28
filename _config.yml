@@ -30,6 +30,8 @@ minima:
 #header_pages:
 # - about.html
 
+permalink: /blog/:title
+
 # Build settings
 markdown: kramdown
 kramdown:

@@ -128,7 +128,6 @@ Let's give some examples to make it clearer.
 |$$X$$|$$A$$|$$B$$|$$C$$|Example Hand|Valid?|
 |-----|-----|-----|-----|------------|------|
 |2|1|0|0|**6** :diamonds: **9** :hearts: **D** :clubs: **K** :clubs: **K** :spades:|yes|
-|2|0|0|0|**2** :clubs: **3** :diamonds: **9** :diamonds: **K** :diamonds: **A** :diamonds:|yes|
 |1|1|1|1|**5** :clubs: **10** :clubs: **10** :hearts: **A** :diamonds: **A** :spades:|yes|
 |5|0|0|0|**10** :hearts: **B** :hearts: **D** :hearts: **K** :hearts: **A** :hearts:|yes|
 |4|2|0|0|**10** :hearts: **B** :hearts: **D** :hearts: **D** :clubs: **K** :diamonds: **K** :hearts:|no, violates constraint 1|
@@ -144,7 +143,7 @@ $$ \Pr(R \;\vert\; X=x, A=a, B=b, C=c) = \Pr(R \;\vert\; X=x) $$
 
 The big question is, how do we calculate $$\Pr(X=x, A=a, B=b, C=c)$$? To do this, again, we need to think about the number of outcomes in the event and the number of outcomes in the sample space.
 
-### This is where the [fun](http://www.imdb.com/title/tt0121766/) begins
+### More combinatorics
 
 The size of our sample space $$\Omega$$ is $$\binom{52}{5}$$ again since we start with a fresh deck and then draw 5 cards from it.
 
@@ -195,7 +194,7 @@ $$g(x, a, b, c) = \prod_{i=1}^5 l_i(x, a, b, c)! $$
 
 The multiplication is needed since it *could* happen that multiple $$l_i$$s are equal/greater than $$2$$ and then we would have to remove permutations not only once but multiple times. It turned out this is not the case for Video Poker. But think of this situation if there were six cards instead of only five: :clubs: :clubs: :spades: :spades: :hearts: :diamonds:.
 
-|Example|$$A$$|$$B$$|$$C$$|$$D$$|$$l_1$$|$$l_2$$|$$l_3$$|$$l_4$$|$$l_5$$|$$g$$|
+|Example|$$C$$|$$B$$|$$A$$|$$X$$|$$l_1$$|$$l_2$$|$$l_3$$|$$l_4$$|$$l_5$$|$$g$$|
 |-------------|-----|-----|-----|-----|-------|-------|-------|-------|-------|-----------------|
 ||0|0|0|0|0|0|0|0|0|1|
 |:clubs:|0|0|0|1|1|0|0|0|0|1|
@@ -218,7 +217,7 @@ The multiplication is needed since it *could* happen that multiple $$l_i$$s are 
 
 We are finally in a position where we can calculate $$\Pr(X=x, A=a, B=b, C=c)$$! Let's do it:
 
-|Example|$$A$$|$$B$$|$$C$$|$$D$$|$$p(X=x, A=a, B=b, C=c)$$|
+|Example|$$C$$|$$B$$|$$A$$|$$X$$|$$p(X=x, A=a, B=b, C=c)$$|
 |-------|-----|-----|-----|-----|-------------------------|
 ||0|0|0|0|7.75 %|
 |:clubs:|0|0|0|1|27.67 %|
@@ -274,7 +273,7 @@ Let $$E$$ denote the expected number of games we need to play until we get a Roy
 
 $$ E = 1 + \frac{23080}{23081} \cdot E \Rightarrow E = 23081$$
 
-This does not tell us that much because it rather means, *on average* we need 23081 games. However, I am pretty sure we don't want to get Royal Flushes a second or third time. There is something else we can do: We could provide a probability on how likely it is that we get a Royal Flush in the first $$n$$ tries.
+This does not tell us that much because it rather means, *on average* we need 23081 games. However, I am pretty sure we don't want to get Royal Flushes a second or third time. There is something else we can do: We could provide a probability $$p$$ on how likely it is that we get a Royal Flush in the first $$n$$ tries.
 
 With the help of [complementary events](https://en.wikipedia.org/wiki/Complementary_event) we solve for $$n$$:
 
