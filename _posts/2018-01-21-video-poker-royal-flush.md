@@ -4,9 +4,9 @@ title: "How Likely is a Royal Flush in GTA's Video Poker?"
 date: 2018-01-21 22:50:00 +0900
 ---
 
-Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
+Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
 
-Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide, which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here at timestep 24:28:
+Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here at timestep 24:28:
 
 {% youtube "https://youtu.be/NU8m18HO35o?start=1468" %}
 <br>
@@ -217,7 +217,7 @@ The multiplication is needed since it *could* happen that multiple $$l_i$$s are 
 
 We are finally in a position where we can calculate $$\Pr(X=x, A=a, B=b, C=c)$$! Let's do it:
 
-|Example|$$C$$|$$B$$|$$A$$|$$X$$|$$p(X=x, A=a, B=b, C=c)$$|
+|Example|$$C$$|$$B$$|$$A$$|$$X$$|$$\Pr(X=x, A=a, B=b, C=c)$$|
 |-------|-----|-----|-----|-----|-------------------------|
 ||0|0|0|0|7.75 %|
 |:clubs:|0|0|0|1|27.67 %|
