@@ -8,4 +8,4 @@ comments: true
 
 # Pictures from my Japan Exchange Semester
 
-![](assets/japan-exchange-pictures/27947176_1650450571690109_340495802_o.jpg)
+![](/assets/japan-exchange-pictures/27947176_1650450571690109_340495802_o.jpg)
