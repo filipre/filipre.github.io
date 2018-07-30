@@ -2,8 +2,8 @@
 layout: post
 title: "Japan Exchange Semester Pictures"
 date: 2018-02-11 20:38:00 +0900
-published: true
-comments: true
+published: false
+comments: false
 ---
 
 # Pictures from my Japan Exchange Semester
