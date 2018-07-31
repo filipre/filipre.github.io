@@ -8,11 +8,6 @@ Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/j
 
 Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts [here](https://youtu.be/NU8m18HO35o?start=1468).
 
-<!--
-{% youtube "https://youtu.be/NU8m18HO35o?start=1468" %}
-<br>
--->
-
 I wondered, how much does he have to play to get a Royal Flush? How likely (in terms of probability) is it if he uses the best strategy?
 
 ## tl;dr
