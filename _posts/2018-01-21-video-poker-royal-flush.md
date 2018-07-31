@@ -6,10 +6,12 @@ date: 2018-01-21 22:50:00 +0900
 
 Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
 
-Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts here at timestep 24:28:
+Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts [here](https://youtu.be/NU8m18HO35o?start=1468).
 
+<!--
 {% youtube "https://youtu.be/NU8m18HO35o?start=1468" %}
 <br>
+-->
 
 I wondered, how much does he have to play to get a Royal Flush? How likely (in terms of probability) is it if he uses the best strategy?
 
@@ -147,7 +149,7 @@ The big question is, how do we calculate $$\Pr(X=x, A=a, B=b, C=c)$$? To do this
 
 The size of our sample space $$\Omega$$ is $$\binom{52}{5}$$ again since we start with a fresh deck and then draw 5 cards from it.
 
-To determine the number of outcomes in the event $$X=x, A=a, B=b, C=c$$, we need to consider all different combinations of suits together with all different combinations of ranks. To make it easier first, let's fix the Random Variables to one specific suit: $$X$$ tracks :clubs:, $$A$$ tracks :spades:, $$B$$ tracks :hearts: and $$C$$: tracks :diamonds:. Let $$r(x, a, b, c)$$ represent the number of different rank combinations. If suits are fixed,
+To determine the number of outcomes in the event $$X=x, A=a, B=b, C=c$$, we need to consider all different combinations of suits together with all different combinations of ranks. To make it easier first, let's fix the Random Variables to one specific suit: $$X$$ tracks :clubs:, $$A$$ tracks :spades:, $$B$$ tracks :hearts: and $$C$$ tracks :diamonds:. Let $$r(x, a, b, c)$$ represent the number of different rank combinations. If suits are fixed,
 
 $$ \Pr(X=x, A=a, B=b, C=c) = \frac{r(x, a, b, c)}{\binom{52}{5}} $$
 
@@ -171,7 +173,7 @@ Finding a nice term for $$s(x, a, b, c)$$ is a bit more tricky, but there are so
 
 $$ s(x, a, b, c) = \frac{4^{H(x)} \cdot 3^{H(a)} \cdot 2^{H(b)} \cdot 1^{H(c)}}{g(x, a, b, c)} $$
 
-So what is $$g(x, a, b, c)$$ doing? You might have noticed the enumerator *sometimes* counts suit combinations twice or more times but *sometimes* does not. On the one hand, the event $$X=2, A=1, B=0, C=0$$ has following combinations:
+So what is $$g(x, a, b, c)$$ doing? The enumerator *sometimes* counts suit combinations twice or more times but *sometimes* does not. On the one hand, the event $$X=2, A=1, B=0, C=0$$ has following combinations:
 
 **[** :clubs: :clubs: :spades: **]**, **[** :clubs: :clubs: :hearts: **]**, **[** :clubs: :clubs: :diamonds: **]**, **[** :spades: :spades: :clubs: **]**, **[** :spades: :spades: :hearts: **]**, **[** :spades: :spades: :diamonds: **]**, **[** :hearts: :hearts: :clubs: **]**, **[** :hearts: :hearts: :spades: **]**, **[** :hearts: :hearts: :diamonds: **]**, **[** :diamonds: :diamonds: :clubs: **]**, **[** :diamonds: :diamonds: :spades: **]**, **[** :diamonds: :diamonds: :hearts: **]**
 
@@ -182,9 +184,8 @@ On the other hand, the event $$X=1, A=1, B=0, C=0$$ has much fewer:
 If two/three/four Random Variables share the same number as others and are at least $$1$$ (here: $$A = X = 1$$), we need to remove additional counted outcomes due to permutations. We do this by using [factorials](https://en.wikipedia.org/wiki/Factorial). $$n!$$ is the number of ways how to permute $$n$$ elements. For instance $$n=3$$, we would get $$n! = 3 \cdot 2 \cdot 1 = 6$$ different ways to permute three suits:
 
 **[** :clubs: :spades: :hearts: **]**, **[** :clubs: :hearts: :spades: **]**, **[** :spades: :clubs: :hearts: **]**, **[** :spades: :hearts: :clubs: **]**, **[** :hearts: :clubs: :spades: **]**, **[** :hearts: :spades: :clubs: **]**
-<!--
-**[** :clubs: :spades: :hearts: **]**, **[** :clubs: :hearts: :spades: **]**, **[** :spades: :clubs: :hearts: **]**, **[** :spades: :hearts: :clubs: **]**, **[** :hearts: :clubs: :spades: **]**, **[** :hearts: :spades: :clubs: **]**
--->
+
+The easiest way to find out $$g(x, a, b, c)$$ is to simply go through every valid assignment for $$X=x, A=a, B=b, C=c$$ and think about it directly. In many cases it is just 1. But, you can also come up with a general formula which I found more confusing than explaining at the end though:
 
 Let $$l_i(x, a, b, c)$$ represent the amount of variables $$x$$, $$a$$, $$b$$ and $$c$$ taking value $$i$$. That means, $$l_i(x, a, b, c)$$ is between $$0$$ and $$4$$ since there are only four suits anyway. Because our Random Variables range between 0 and 5, we keep books of $$l_1$$ to $$l_5$$ in the table below. $$l_0$$ is not needed.
 
@@ -295,7 +296,7 @@ I think this table describes much better how much effort Josh might have to put 
 
 ## Empirical Validation
 
-To confirm the theory, I wrote a small Python script that simulates getting a Royal Flush 10000 times. After 4h on my MacBook, the result was **24029** tries on average, which is not too far away from 23081. You can find the code below:
+To confirm the theory, I wrote a small Python script that simulates getting a Royal Flush 10000 times. After 4h on my MacBook, the probability was $$\frac{1}{24029} \approx 0.0042 \%$$, which is not too far away from $$\frac{1}{23081} \approx 0.0043 \%$$. You can find the code below:
 
 ```python
 from pcards import Deck, Card
@@ -365,3 +366,7 @@ def runSimulation(n = 100, numCores = multiprocessing.cpu_count()):
 
 runSimulation(n = 10000)
 ```
+
+*Update*: In case you come up with a better way, please let me know.
+
+*Update*: [@MrSmithVP](https://twitter.com/MrSmithVP) simulated this already [here](https://gtaforums.com/topic/886791-video-poker/) using C++ and a more efficient implementation.
