@@ -16,7 +16,7 @@ social_sites:
   #youtube: jekyll
   #googleplus: +jekyll
 
-rss: rss
+# rss: rss
 google_analytics: UA-112738899-1
 disqus-shortname: renes-blog
 

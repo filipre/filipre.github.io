@@ -57,7 +57,7 @@ $$\lVert x \rVert_0 = |\{ x_i \ \colon \ x_i \ne 0 \}|$$
 
 The 0-norm looks like a suitable candidate for our $$f_\mathrm{size}$$ function. We assume that the foreground takes only a small part of the video, i.e. each frame will have many zero elements in it and our foreground matrix $$B$$ will be [sparse](https://en.wikipedia.org/wiki/Sparse_matrix). Thus, we want to minimize $$B$$ over the 0-norm. Sadly, the 0-norm is not only non-convex but also too hard to optimize. We do know how to optimize over convex functions so we need to find a suitable convex alternative to the 0-norm that behaves not the same but close enough.
 
-Let's suppose we are in $$R^2$$ only. The blue line below demonstrates all possible $$(x_1, x_2)$$-pairs solutions for any given problem. So which solution should we pick? Clearly there are infinite many. We could make the additional requirement to make the solution as sparse as possible, i.e. either $$x_1$$ or $$x_2$$ should be zero. It should be obvious that the solution will be the intersection of the blue line with the $$x_1$$- or $$x_2$$-axis. But how would we get the intersection? Instead of optimizing over the original energy function (the blue line) only, we will also optimize over the 1-norm (red line), i.e. we will make the area of the red square as small as possible such that the red edges still hit any part of the blue line.
+Let's suppose we are in $$R^2$$ only. The blue line below shows all optimal $$(x_1, x_2)$$-pair solutions for any given problem. So which solution should we pick? Clearly there are infinite many. We could make the additional requirement to make the solution as sparse as possible, i.e. either $$x_1$$ or $$x_2$$ should be zero. It should be obvious that the solution will be the intersection of the blue line with the $$x_1$$- or $$x_2$$-axis. But how would we get the intersection? Instead of optimizing over the original energy function (the blue line) only, we will also optimize over the 1-norm (red line), i.e. we will make the area of the red square as small as possible such that the red edges still hit any part of the blue line.
 
 ![l1 optimization](../assets/background-foreground/l1_energy.png)
 
@@ -123,10 +123,11 @@ Notice that none of the terms are differentiable, so simple gradient descent or 
 
 $$\begin{aligned}
 A^{k+1} &\in \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle + \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2 \\
-&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} ( 2 \langle \frac{1}{\rho} Y^k, A \rangle + \langle A+B^k-M^k, A+B^k-M^k \rangle ) \\
-&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \langle A+B-M^k+\frac{1}{\rho}Y^k, A+B-M^k+\frac{1}{\rho}Y^k \rangle \\
-&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \lVert A - (M^k - B^k - \frac{1}{\rho} Y^k) \rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\lVert \cdot \rVert_\mathrm{nuc} / \rho}(M^k - B^k - \frac{1}{\rho} Y^k )
+&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} ( 2 \langle \tfrac{1}{\rho} Y^k, A \rangle + \langle A+B^k-M^k, A+B^k-M^k \rangle ) \\
+&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \langle A+B-M^k+\tfrac{1}{\rho}Y^k, A+B-M^k+\tfrac{1}{\rho}Y^k \rangle \\
+&= \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \lVert A - (M^k - B^k - \tfrac{1}{\rho} Y^k) \rVert_\mathrm{fro}^2 \\
+&= \operatorname{prox}_{\lVert \cdot \rVert_\mathrm{nuc} / \rho}(\underbrace{M^k - B^k - \tfrac{1}{\rho} Y^k}_X ) \\
+&= U \operatorname{diag} ( \{ (\sigma_i - \tfrac{1}{\rho})_+ \} ) V^T \ \text{where} \ X = U \Sigma V^T
 \end{aligned}$$
 
 <!-- $$U \diag(\{ (\sigma_i - \frac{1}{\rho})_+ \}) V^T$$ -->
@@ -137,17 +138,21 @@ A^{k+1} &\in \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle 
 
 $$\begin{aligned}
 B^{k+1} &\in \arg\min_{B} \lVert B \rVert_1 + \langle Y^k, B \rangle + \frac{\rho}{2} \lVert A^{k+1}+B-M^k \rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\lVert \cdot \rVert_1 \lambda / \rho} (M^k - A^{k+1} - \frac{1}{\rho} Y^k) \\
-\operatorname{vec} B &= \operatorname{prox}_{\lVert \operatorname{vec}(\cdot) \rVert_1 \lambda / \rho} (  \operatorname{vec} (M^k - A^{k+1} - \frac{1}{\rho} Y^k))
+&= \operatorname{prox}_{\lVert \cdot \rVert_1 \lambda / \rho} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k) \\
+\operatorname{vec} B^{k+1} &= \operatorname{prox}_{\lVert \operatorname{vec}(\cdot) \rVert_1 \lambda / \rho} (  \underbrace{\operatorname{vec} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k)}_{x}) \\
+&= b \in \mathbb{R}^{n_1 n_2} \ \colon \ b_i =
+\begin{cases}
+x_i + \tfrac{\lambda}{\rho} &\text{if } x_i < -\tfrac{\lambda}{\rho} \\
+0 &\text{if } x_i \in [ -\tfrac{\lambda}{\rho}, \tfrac{\lambda}{\rho} ] \\
+x_i - \tfrac{\lambda}{\rho} &\text{if } x_i > \tfrac{\lambda}{\rho}
+\end{cases}
 \end{aligned}$$
-
-// todo
 
 ### Optimization over M: Reconstruction
 
 $$\begin{aligned}
 M^{k+1} &\in \arg\min_M \delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \} - \langle Y^k, M \rangle + \frac{\rho}{2} \lVert A^{k+1} + B^{k+1} - M\rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \} / \rho } (A^{k+1} + B^{k+1} + \frac{1}{\rho} Y^k) \\
+&= \operatorname{prox}_{\delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \} / \rho } (\underbrace{A^{k+1} + B^{k+1} + \tfrac{1}{\rho} Y^k}_X) \\
 &= \operatorname{proj}_{C} (X) \ \text{and} \ C=\{M \in \mathbb{R}^{n_1 \times n_2} \ \colon \ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon\} \\
 \operatorname{vec} M^{k+1} &= \operatorname{proj}_{C'} (\operatorname{vec} X) \ \text{and} \ C'= \{ m \in \mathbb{R}^{n_1 n_2} \ \colon \ \lVert m - \operatorname{vec}Z \rVert_2 \le \epsilon\} = \overline{B}(\operatorname{vec}{Z}, \epsilon)\\
 &= \operatorname{vec}Z + \frac{\epsilon}{\max\{ \lVert \operatorname{vec}X - \operatorname{vec}Z \rVert_2, \epsilon \}} (\operatorname{vec} X - \operatorname{vec} Z)
@@ -156,6 +161,72 @@ M^{k+1} &\in \arg\min_M \delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon 
 
 
 ## Implementation using Numpy
+
+Update Rules
+
+```python
+def calcA(B, M, Y, rho):
+    X = M - B - (1/rho)*Y
+    n1, n2 = X.shape
+    U, S, VH = np.linalg.svd(X, full_matrices=False)
+    diag_plus = np.diag(np.maximum(np.zeros(S.shape), S - 1/rho))
+    A = U @ diag_plus @ VH
+    return A
+
+def calcB(A, M, Y, rho, lamb):
+    X = M - A - (1/rho)*Y
+    x = mat2vec(X)
+    lamb_rho = lamb / rho
+    b = x
+    b[np.where(b < -lamb_rho)] += lamb_rho
+    b[np.where(b > lamb_rho)] -= lamb_rho
+    B = vec2mat(b, X.shape)
+    return B
+
+def calcM(A, B, Y, Z, rho, eps):
+    X = A + B + (1/rho)*Y
+    x = mat2vec(X)
+    z = mat2vec(Z)
+    m = z + eps / (np.maximum(np.linalg.norm(x-z), eps)) * (x-z)
+    M = vec2mat(m, X.shape)
+    return M
+
+def calcY(A, B, M, Y, rho):
+    Y = Y + rho * (A + B - M)
+    return Y
+
+def calcEnergy(A, B, M, Y, rho, lamb):
+    A_nuc = np.linalg.norm(A, ord='nuc')
+    B_1 = lamb*np.linalg.norm(mat2vec(B), ord=1)
+    inner = np.trace(Y.T.dot(A+B-M))
+    fro = rho/2 * np.linalg.norm(A+B-M)
+    energy = A_nuc + B_1 + inner + fro
+    return energy
+```
+
+Update Iteration
+
+```python
+for it in range(max_it+1):
+    # update A:
+    A = calcA(B, M, Y, rho)
+
+    # update B:
+    B = calcB(A, M, Y, rho, lamb)
+
+    # update M:
+    M = calcM(A, B, Y, Z, rho, eps)
+
+    # update Y:
+    Y = calcY(A, B, M, Y, rho)
+
+    # update augmented lagrangian energies
+    energy = calcEnergy(A, B, M, Y, rho, lamb)
+    energies.append(energy)
+
+    # output status
+    print("Iteration:", it, "/", max_it, ", Energy:", energy)
+```
 
 ## Appendix
 
