@@ -4,6 +4,8 @@ email: renefilip@mail.com
 description: > # this means to ignore newlines until "baseurl:"
   I write about random stuff.
 
+url: "https://rene.pub"
+
 social_sites:
   twitter: filipre
   github:  filipre
