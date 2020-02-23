@@ -4,7 +4,7 @@ title: "How Likely is a Royal Flush in GTA's Video Poker?"
 date: 2018-01-21 22:50:00 +0900
 ---
 
-Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
+Some months ago I came across the Twitch streamer [Joshimuz](https://twitch.tv/joshimuz) who has quite an interesting project: He tries to play through GTA San Andreas by solving *everything*. Not only he tries to achieve 100 % but he also set his own goals and challenges. At the same time, he gives insights into a lot of (speed running) techniques, interesting bugs and a little bit of game development. If you like content like that, you should definitely check out his video series [True 100%+](https://www.youtube.com/watch?v=FlOQslp4MQA) on Youtube.
 
 Anyway, one of his goals is to get a Royal Flush in GTA's [video poker](https://en.wikipedia.org/wiki/Video_poker). Like in normal video poker, you get 5 cards and you decide which cards you want to keep. Then, you get new cards and depending on what kind of hand you have, you get some amount of money or nothing at all. Obviously, a Royal Flush gives you the most money but is also the least likely outcome. You can watch his first attempts [here](https://youtu.be/NU8m18HO35o?start=1468).
 
@@ -14,7 +14,7 @@ I wondered, how much does he have to play to get a Royal Flush? How likely (in t
 
 By using the best strategy, the probability of getting a Royal Flush is about **0.004 %** which means, *it's expected* that he plays around **23081** games of video poker.
 
-Furthermore, we can provide the amount of games needed for getting a Royal Flush with a certain probability. For example: It's 50 % likely that Joshimuz gets a Royal Flush if he plays 15998 games. On the other hand, there is a 1 % chance that he might not get a Royal Flush even after 106288 games. RIP.
+Furthermore, we can provide the amount of games needed for getting a Royal Flush with a certain probability. For example: It's 50 % likely that Joshimuz gets a Royal Flush if he plays 15998 games. On the other hand, there is a 1 % chance that he might not get a Royal Flush even after 106288 games.
 
 |p|n|
 |-|-|
@@ -180,7 +180,31 @@ If two/three/four Random Variables share the same number as others and are at le
 
 **[** :clubs: :spades: :hearts: **]**, **[** :clubs: :hearts: :spades: **]**, **[** :spades: :clubs: :hearts: **]**, **[** :spades: :hearts: :clubs: **]**, **[** :hearts: :clubs: :spades: **]**, **[** :hearts: :spades: :clubs: **]**
 
-The easiest way to find out $$g(x, a, b, c)$$ is to simply go through every valid assignment for $$X=x, A=a, B=b, C=c$$ and think about it directly. In many cases it is just 1. But, you can also come up with a general formula which I found more confusing than explaining at the end though:
+The easiest way to find out $$g(x, a, b, c)$$ is to simply go through every valid assignment for $$X=x, A=a, B=b, C=c$$ and think about it directly. In many cases it is just 1.
+
+|Example|$$C$$|$$B$$|$$A$$|$$X$$|$$g$$|
+|-------------|-----|-----|-----|-----|-------|-------|-------|-------|-------|-----------------|
+||0|0|0|0|1|
+|:clubs:|0|0|0|1|1|
+|:clubs: :spades:|0|0|1|1|2|
+|:clubs: :spades: :hearts:|0|1|1|1|6|
+|:clubs: :spades: :hearts: :diamonds:|1|1|1|1|24|
+|:diamonds: :diamonds:|0|0|0|2|1|
+|:diamonds: :diamonds: :clubs:|0|0|1|2|1|
+|:diamonds: :diamonds: :clubs: :spades:|0|1|1|2|2|
+|:diamonds: :diamonds: :clubs: :spades: :hearts:|1|1|1|2|6|
+|:diamonds: :diamonds: :hearts: :hearts:|0|0|2|2|2|
+|:diamonds: :diamonds: :spades: :spades: :clubs:|0|1|2|2|2|
+|:spades: :spades: :spades:|0|0|0|3|1|
+|:spades: :spades: :spades: :diamonds:|0|0|1|3|1|
+|:spades: :spades: :spades: :diamonds: :clubs:|0|1|1|3|2|
+|:spades: :spades: :spades: :diamonds: :diamonds:|0|0|2|3|1|
+|:hearts: :hearts: :hearts: :hearts:|0|0|0|4|1|
+|:hearts: :hearts: :hearts: :hearts: :clubs:|0|0|1|4|1|
+|:clubs: :clubs: :clubs: :clubs: :clubs:|0|0|0|5|1|
+
+<!--
+But, you can also come up with a general formula which I found more confusing than explaining at the end though:
 
 Let $$l_i(x, a, b, c)$$ represent the amount of variables $$x$$, $$a$$, $$b$$ and $$c$$ taking value $$i$$. That means, $$l_i(x, a, b, c)$$ is between $$0$$ and $$4$$ since there are only four suits anyway. Because our Random Variables range between 0 and 5, we keep books of $$l_1$$ to $$l_5$$ in the table below. $$l_0$$ is not needed.
 
@@ -210,6 +234,7 @@ The multiplication is needed since it *could* happen that multiple $$l_i$$s are 
 |:hearts: :hearts: :hearts: :hearts:|0|0|0|4|0|0|0|1|0|1|
 |:hearts: :hearts: :hearts: :hearts: :clubs:|0|0|1|4|1|0|0|1|0|1|
 |:clubs: :clubs: :clubs: :clubs: :clubs:|0|0|0|5|0|0|0|0|1|1|
+-->
 
 We are finally in a position where we can calculate $$\Pr(X=x, A=a, B=b, C=c)$$! Let's do it:
 
@@ -291,7 +316,7 @@ I think this table describes much better how much effort Josh might have to put 
 
 ## Empirical Validation
 
-To confirm the theory, I wrote a small Python script that simulates getting a Royal Flush 10000 times. After 4h on my MacBook, the probability was $$\frac{1}{24029} \approx 0.0042 \%$$, which is not too far away from $$\frac{1}{23081} \approx 0.0043 \%$$. You can find the code below:
+To confirm the theory, I wrote a small Python script that simulates getting a Royal Flush 10000 times. After 4h on my MacBook, the probability was $$0.0042\%$$, which is not too far away from $$0.0043 \%$$. You can find the code below:
 
 ```python
 from pcards import Deck, Card
@@ -365,3 +390,7 @@ runSimulation(n = 10000)
 *Update*: In case you come up with a better way, please let me know.
 
 *Update*: [@MrSmithVP](https://twitter.com/MrSmithVP) simulated this already [here](https://gtaforums.com/topic/886791-video-poker/) using C++ and a more efficient implementation.
+
+*Update*: Joshimuz mentioned my blog post in one of his videos, thanks! https://youtu.be/S4Wb8EFN1fU?t=2547
+
+*Update*: "He did it!" See comments or https://reddit.com/r/LivestreamFail/comments/a6opyj/royal_flush_in_gtasa/
