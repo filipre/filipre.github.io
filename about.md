@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Hi
+Here, I write about interesting projects I did during University or my free time.

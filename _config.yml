@@ -1,25 +1,25 @@
 title: René's Blog
 author: René Filip
 email: renefilip@mail.com
-description: > # this means to ignore newlines until "baseurl:"
-  I write about random stuff.
+description: # > # this means to ignore newlines until "baseurl:"
 
 url: "https://rene.pub"
 
 social_sites:
-  twitter: filipre
   github:  filipre
+  linkedin: rene-filip
+  #twitter:
   #dribbble: jekyll
   #facebook: jekyll
   #flickr: jekyll
   #instagram: jekyll
-  #linkedin: jekyll
+
   #pinterest: jekyll
   #youtube: jekyll
   #googleplus: +jekyll
 
 # rss: rss
-google_analytics: UA-112738899-1
+# google_analytics: UA-112738899-1
 disqus-shortname: renes-blog
 
 # Minima date format

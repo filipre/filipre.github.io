@@ -1,12 +1,8 @@
 ---
 layout: post
-title: "Separating the Foreground and Background of a Video using Convex Optimization"
-date: 2019-01-01 16:37:00 +0100
+title: "Separating the Foreground and Background of a Video"
+date: 2019-03-01 16:37:00 +0100
 ---
-
-*Todo: go through each link and check if they work*
-
-*Todo: rework on sections with //*
 
 Currently, I am taking a class called "Convex Optimization for Machine Learning & Computer Vision". Even though the lectures are quite theoretical, the programming homework are not and we do some interesting projects like this one: How would you separate the background and the foreground of a video using optimization?
 
@@ -30,9 +26,9 @@ Before we take a closer look at the two mysterious functions $$f_\mathrm{change}
 
 $$\arg\min_{A, B, M} f_\mathrm{change}(A) + \lambda f_\mathrm{size}(B) + \delta\{A+B-M=0\} + \delta\{\lVert M - Z\rVert_{\mathrm{fro}} \le \epsilon\}$$
 
-//You might have guessed it but our two functions will be two norms that enforce a low rank on $$A$$ using the nuclear norm (i.e. the video will show always the same background image) and sparsity on $$B$$ using the L1 norm (i.e. the video will only show the moving parts). There is an interesting relationship between the two norms that we will explore in the following sections. Let's start easy:
+<!-- //You might have guessed it but our two functions will be two norms that enforce a low rank on $$A$$ using the nuclear norm (i.e. the video will show always the same background image) and sparsity on $$B$$ using the L1 norm (i.e. the video will only show the moving parts). There is an interesting relationship between the two norms that we will explore in the following sections. Let's start easy: -->
 
-## Background 1: Vector $$p$$-Norm
+## Vector $$p$$-Norm
 
 Most of the norms you usually encounter are vector $$p$$-norms. For $$p \ge 1$$ they are defined like this
 
@@ -49,7 +45,7 @@ $$\begin{aligned}
 
 However, for $$0 < p < 1$$ the $$p$$-norm is not a norm but a [Quasinorm](https://en.wikipedia.org/wiki/Quasinorm) and therefore, the function is not necessarily convex anymore. You can also see in the visualization that the epigraph (the level curves) are not a convex set.
 
-// visualization animation
+<!-- // visualization animation -->
 
 Notice how the edges at the axes become sharper and sharper. Taking $$p=0$$ breaks the original $$p$$-norm formula (whats the 0-th root of a number?) so people agreed to define the 0-norm as the number of non-zero elements in a vector
 
@@ -67,7 +63,7 @@ One tiny part is missing: $$B$$ is a matrix and the 1-norm is defined for vector
 
 $$\lVert B \rVert_1 = \lVert\operatorname{vec} B\rVert_1$$
 
-## Background 2: Matrix Schatten $$p$$-Norm
+## Matrix Schatten $$p$$-Norm
 
 There are several ways to define a matrix norm and things can become confusing. One way is by vectorizing the matrix and actually referring to a vector norm like it was the case above. A general formula would be
 
@@ -91,7 +87,7 @@ $$A = U \Sigma V^T$$
 
 where $$U$$ and $$V$$ are orthogonal matrices ($$U^TU = UU^T = I$$) and $$\Sigma$$ is a diagonal matrix consisting of $$r = \operatorname{rank} A$$ singular values $$\sigma_1 \ge \cdots \ge \sigma_r$$ unequal to 0 and $$\sigma_{r+1} = \cdots = \sigma_n$$ equal to zero. $$U$$ consists of the necessary $$r$$ orthonormal bases and $$\Sigma$$ tells you how much you have to scale them to reconstruct entries in $$A$$.
 
-// SVD Animation
+<!-- // SVD Animation -->
 
 The higher a specific singluar value is, the more important it is to explain the data. For example, if your data follows a linear trend in $$\mathbb{R}^2$$, then you will end up with a very high first singular value and a quite small second singular value. And if you can explain your data *perfectly* using a simple line, then the second singular value will be zero and your rank is 1 because
 
@@ -99,9 +95,7 @@ $$\operatorname{rank} A = | \{ \sigma_i \ \colon \ \sigma_i \ne 0, A = U \Sigma 
 
 Now, remember that the Schatten $$p$$-norm is defined over the singular values for $$1 \le p \le +\infty$$. Interestingly enough, taking $$p = 2$$ also yields the Frobenius norm.
 
-// herleitung
-
-Setting $$p=0$$ will not give you a real norm as it was the case with the vector 0-norm and it won't be convex anymore but it turns out that it counts the non-zero elements of your singular values. Do you see the similarity between the vector 0-norm and matrix Schatten 0-norm?
+Setting $$p=0$$ will not give us a real norm as it was the case with the vector 0-norm and it won't be convex anymore but it turns out that it counts the non-zero elements of your singular values. Do you see the similarity between the vector 0-norm and matrix Schatten 0-norm?
 
 $$\lVert A \rVert_0 = |\{ \sigma_i \ \colon \ \sigma_i \ne 0 \}| = \operatorname{rank} A$$
 
@@ -119,6 +113,8 @@ Notice that none of the terms are differentiable, so simple gradient descent or 
 
 ## Alternating Direction Method of Multipliers (ADMM)
 
+Instead, we use ADMM. For now, I won't go into details how to derive these update rules but the idea is to introduce a Lagrangian Multiplier $$Y$$ to enforce $$A+B=M$$ and optimize over $$A$$, $$B$$ and $$Y$$ in an alternating way. Each optimization problem can be reformulated using the $$\operatorname{prox}$$ operator and the $$\operatorname{prox}$$ of the Nuclear norm and L1 norm are well known. Please have a look at the Python code to see the update iteration.
+
 ### Optimization over A: Low Rank Matrix
 
 $$\begin{aligned}
@@ -131,7 +127,6 @@ A^{k+1} &\in \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle 
 \end{aligned}$$
 
 <!-- $$U \diag(\{ (\sigma_i - \frac{1}{\rho})_+ \}) V^T$$ -->
-
 
 
 ### Optimization over B: Sparse Matrix
@@ -157,8 +152,6 @@ M^{k+1} &\in \arg\min_M \delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon 
 \operatorname{vec} M^{k+1} &= \operatorname{proj}_{C'} (\operatorname{vec} X) \ \text{and} \ C'= \{ m \in \mathbb{R}^{n_1 n_2} \ \colon \ \lVert m - \operatorname{vec}Z \rVert_2 \le \epsilon\} = \overline{B}(\operatorname{vec}{Z}, \epsilon)\\
 &= \operatorname{vec}Z + \frac{\epsilon}{\max\{ \lVert \operatorname{vec}X - \operatorname{vec}Z \rVert_2, \epsilon \}} (\operatorname{vec} X - \operatorname{vec} Z)
 \end{aligned}$$
-
-
 
 ## Implementation using Numpy
 
@@ -228,6 +221,8 @@ for it in range(max_it+1):
     print("Iteration:", it, "/", max_it, ", Energy:", energy)
 ```
 
+<!--
+
 ## Appendix
 
 ### Proximal Operator of 1-Norm
@@ -235,3 +230,5 @@ for it in range(max_it+1):
 ### Proximal Operator of Nuclear Norm
 
 ### Projection onto Ball $$B(z, r)$$
+
+-->

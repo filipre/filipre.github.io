@@ -1,0 +1,4 @@
+- upload any image (PNG) and remove some (possibly) hidden secret data
+- FB uses tracking code in images to track sources of images [Link TODO]
+- explain method, examples, ...
+- plugin?

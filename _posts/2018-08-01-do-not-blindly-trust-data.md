@@ -1,10 +1,19 @@
 ---
 layout: post
 title: "Do not blindly trust your data"
-date: 2019-01-04 19:40:00 +0100
+date: 2018-08-01 15:00:00 +0100
 ---
 
+During my Master, I took the class "Data Science Society" which is about the ethics on data science. For the final project of this class, every student had to write an essay on a related topic. This was my attempt.
+
+[![alt text](../assets/do-not-blindly-trust-your-data/essay_cover.png)](../assets/do-not-blindly-trust-your-data/essay.pdf)
+
+[Download](../assets/do-not-blindly-trust-your-data/essay.pdf)
+
+<!--
+
 *Note: This essay was part of the "Data Science Society" class that deals with ethical questions in data science. At the end, each student had to choose a related topic and write a short essay about it. This was my attempt.*
+
 
 In Data Science and Machine Learning one does not simply apply an algorithm and reads out the result to solve a problem. Often, it includes tasks like data collection, data cleaning and data interpretation. In all these steps, many things can go wrong and manipulate the final result. Because people trust more and more the results of an algorithm, it is important to understand what can go wrong, why a result might be biased and how such a wrong result affects other people. In this essay we will analyze some factors and argue about their importance and influence. At the end we reason why data science is more than only applying mathematical operations.
 
@@ -26,7 +35,7 @@ This is a problem. The first two categories of algorithms we mentioned above did
 
 Solving a problem implicitly is not a bad thing per se. Actually, it is often much more easier to solve a problem that way than describing a solution explicitly. But, it adds a danger that one can easily overlook: The algorithm always produces a model (even for bad or wrong training data) and just because it returns does not mean it also returns the right solution! While for "classical" algorithms there often exist proofs guaranteeing correctness, users of machine learning algorithms must be aware that these do not exist in the same way. The user must not have a false sense of security just because the algorithm returned successfully and the underlying challenge is how to evaluate a model.
 
-<!-- There are ways to perform the evaluation and we will look at them shortly. But the consequence of this is quite depressing: In the real world there might be bad machine learning models that do not act the way which was intended. For example, in \cite{dailymail_com_2017} a soap dispenser was trained on detecting hands in order to dispose soap. It turned out that the model was trained on a data set that only contained white colored hands and at the end it could not detect the hand gesture by a black person. If we translate this problems where human life is in danger, the magnitude of it becomes clear. Imagine a self-driving car that cannot detect a group of humans because the model expected a different physical appearance. These kind of issues are not obvious from the start and might surprise. -->
+There are ways to perform the evaluation and we will look at them shortly. But the consequence of this is quite depressing: In the real world there might be bad machine learning models that do not act the way which was intended. For example, in \cite{dailymail_com_2017} a soap dispenser was trained on detecting hands in order to dispose soap. It turned out that the model was trained on a data set that only contained white colored hands and at the end it could not detect the hand gesture by a black person. If we translate this problems where human life is in danger, the magnitude of it becomes clear. Imagine a self-driving car that cannot detect a group of humans because the model expected a different physical appearance. These kind of issues are not obvious from the start and might surprise.
 
 TOOD
 
@@ -35,3 +44,5 @@ TOOD
 [1] Machine Learning Healthcare Applications - 2018 and Beyond - Faggella, Daniel - 2018
 
 [2] Digital keywords: a vocabulary of information society and culture - Peters, Benjamin - Princeton University Press. - 2016
+
+-->

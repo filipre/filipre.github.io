@@ -1,0 +1,20 @@
+- What is the effect of planting trees?
+- How much polution does transportaiton cause
+- What is the effect of each country?
+- Energy of the sun vs. energy cause by global warming, etc.
+- What evidence is there?
+- How much energy does power plants produce vs. how much they cost to construct vs. how long they last
+    - nuclear
+    - solar power
+    - wind energy
+    - fossil burning
+- take arguments by political parties and use data to agree or disagree
+- when did people start burning fossils and how much energy did we release?
+- what does *really* make an impact?
+    - banning staws?
+    - buying clothes
+    - reducing coffee cups?
+    - etc...
+- How much CO2 can soil store?
+- How did oil get created in the first place?
+- Electro cars vs fossil powered cars
