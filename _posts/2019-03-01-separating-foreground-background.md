@@ -113,7 +113,16 @@ Notice that none of the terms are differentiable, so simple gradient descent or 
 
 ## Alternating Direction Method of Multipliers (ADMM)
 
-Instead, we use ADMM. For now, I won't go into details how to derive these update rules but the idea is to introduce a Lagrangian Multiplier $$Y$$ to enforce $$A+B=M$$ and optimize over $$A$$, $$B$$ and $$Y$$ in an alternating way. Each optimization problem can be reformulated using the $$\operatorname{prox}$$ operator and the $$\operatorname{prox}$$ of the Nuclear norm and L1 norm are well known. Please have a look at the Python code to see the update iteration.
+Instead, we use ADMM. For now, I won't go into details how to derive these update rules but the idea is to introduce a Lagrangian Multiplier $$Y$$ to enforce $$A+B=M$$ and optimize over $$A$$, $$B$$, $$M$$ and finally $$Y$$ in an alternating way. Each optimization problem can be reformulated using the $$\operatorname{prox}$$ operator and the $$\operatorname{prox}$$ of the Nuclear norm, the L1 norm and the indicator function are well known. Please have a look at the Python code to see the update iteration. We reformulate the problem as the Augmented Lagrangian.
+
+$$\begin{aligned}
+\min_{A, B, M} \max_{Y} \mathcal{L}(A, B, M; Y)
+= &\lVert A \rVert_\mathrm{nuc}
++ \lVert B \rVert_1
++ \delta\{\lVert M - Z\rVert_{\mathrm{fro}} \le \epsilon\}  \\
+&+ \langle A+B-M, Y \rangle
++ \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2
+\end{aligned}$$
 
 ### Optimization over A: Low Rank Matrix
 
@@ -132,7 +141,7 @@ A^{k+1} &\in \arg\min_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle 
 ### Optimization over B: Sparse Matrix
 
 $$\begin{aligned}
-B^{k+1} &\in \arg\min_{B} \lVert B \rVert_1 + \langle Y^k, B \rangle + \frac{\rho}{2} \lVert A^{k+1}+B-M^k \rVert_\mathrm{fro}^2 \\
+B^{k+1} &\in \arg\min_{B} \lambda \lVert B \rVert_1 + \langle Y^k, B \rangle + \frac{\rho}{2} \lVert A^{k+1}+B-M^k \rVert_\mathrm{fro}^2 \\
 &= \operatorname{prox}_{\lVert \cdot \rVert_1 \lambda / \rho} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k) \\
 \operatorname{vec} B^{k+1} &= \operatorname{prox}_{\lVert \operatorname{vec}(\cdot) \rVert_1 \lambda / \rho} (  \underbrace{\operatorname{vec} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k)}_{x}) \\
 &= b \in \mathbb{R}^{n_1 n_2} \ \colon \ b_i =
@@ -152,6 +161,12 @@ M^{k+1} &\in \arg\min_M \delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon 
 \operatorname{vec} M^{k+1} &= \operatorname{proj}_{C'} (\operatorname{vec} X) \ \text{and} \ C'= \{ m \in \mathbb{R}^{n_1 n_2} \ \colon \ \lVert m - \operatorname{vec}Z \rVert_2 \le \epsilon\} = \overline{B}(\operatorname{vec}{Z}, \epsilon)\\
 &= \operatorname{vec}Z + \frac{\epsilon}{\max\{ \lVert \operatorname{vec}X - \operatorname{vec}Z \rVert_2, \epsilon \}} (\operatorname{vec} X - \operatorname{vec} Z)
 \end{aligned}$$
+
+### Dual Ascend Step for Y
+
+In ADMM, we perform a gradient ascend step for the dual variable $$Y$$ to enforce the equality constraint:
+
+$$Y^{k+1} = Y^k + \rho * (A^{k+1} + B^{k+1} - M^{k+1})$$
 
 ## Implementation using Numpy
 
