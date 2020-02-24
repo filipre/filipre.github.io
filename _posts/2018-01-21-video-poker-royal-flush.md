@@ -12,7 +12,7 @@ I wondered, how much does he have to play to get a Royal Flush? How likely (in t
 
 ## tl;dr
 
-By using the best strategy, the probability of getting a Royal Flush is about **0.004 %** which means, *it's expected* that he plays around **23081** games of video poker.
+By using the best strategy, the probability of getting a Royal Flush is about **0.0043 %** which means, *it's expected* that he plays around **23081** games of video poker.
 
 Furthermore, we can provide the amount of games needed for getting a Royal Flush with a certain probability. For example: It's 50 % likely that Joshimuz gets a Royal Flush if he plays 15998 games. On the other hand, there is a 1 % chance that he might not get a Royal Flush even after 106288 games.
 
