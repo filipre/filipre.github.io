@@ -391,6 +391,6 @@ runSimulation(n = 10000)
 
 *Update*: [@MrSmithVP](https://twitter.com/MrSmithVP) simulated this already [here](https://gtaforums.com/topic/886791-video-poker/) using C++ and a more efficient implementation.
 
-*Update*: Joshimuz mentioned my blog post in one of his videos, thanks! https://youtu.be/S4Wb8EFN1fU?t=2547
+*Update*: Joshimuz mentioned my blog post in one of his [videos](https://youtu.be/S4Wb8EFN1fU?t=2547). Thanks!
 
-*Update*: "He did it!" See comments or https://reddit.com/r/LivestreamFail/comments/a6opyj/royal_flush_in_gtasa/
+*Update*: "He did it!" See comments or [this](https://reddit.com/r/LivestreamFail/comments/a6opyj/royal_flush_in_gtasa/) Reddit thread.
