@@ -286,7 +286,7 @@ These are my results
 
 Finally, by using Law of Total Probability:
 
-$$ \Pr(R) = \sum_{x=0}^5 \Pr(X=x) \cdot \Pr(R \;\vert\; X=x) \approx \frac{1}{23081} \approx 0.004 \% $$
+$$ \Pr(R) = \sum_{x=0}^5 \Pr(X=x) \cdot \Pr(R \;\vert\; X=x) \approx \frac{1}{23081} \approx 0.0043 \% $$
 
 ### Number of expected games and more
 
