@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Do not blindly trust your data"
+title: "Do Not Blindly Trust Your Data"
 date: 2018-08-01 15:00:00 +0100
 ---
 
