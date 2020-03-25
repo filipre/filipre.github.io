@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Generate Graphs using GANs"
+title: "Generate Graphs Using GANs"
 date: 2019-04-01 15:00:00 +0100
 ---
 
