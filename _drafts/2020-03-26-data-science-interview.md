@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "Data Science Interview"
-date: 2020-03-23 15:00:00 +0100
+date: 2020-03-26 15:00:00 +0100
 ---
 
-- https://twitter.com/Al_Grigor/status/1230818076578459649
-- https://hackernoon.com/160-data-science-interview-questions-415s3y2a
-- https://github.com/alexeygrigorev/data-science-interviews/blob/master/theory.md
+- [https://twitter.com/Al_Grigor/status/1230818076578459649](https://twitter.com/Al_Grigor/status/1230818076578459649)
+- [https://hackernoon.com/160-data-science-interview-questions-415s3y2a](https://hackernoon.com/160-data-science-interview-questions-415s3y2a)
+- [https://github.com/alexeygrigorev/data-science-interviews/blob/master/theory.md](https://github.com/alexeygrigorev/data-science-interviews/blob/master/theory.md)
 
 
 ## Supervised machine learning
@@ -36,15 +36,24 @@ $$
 
 where $$\phi(X)$$ is <!-- TODO -->
 
+Assumptions: TODO see wikipedia
+
+feature selection
+
 **What’s the normal distribution? Why do we care about it? 👶**
 
 $$
 f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left( -\frac{1}{2} \left( \frac{x-\mu}{\sigma} \right)^2  \right)
 $$
 
+central limit theorem
+
+fehler normalverteilt
+
 **How do we check if a variable follows the normal distribution? ‍⭐**
 
 - histogram
+- quantile quantile plot
 - chi-square-test? TODO
 
 **What if we want to build a model for predicting prices? Are prices distributed normally? Do we need to do any pre-processing for prices? ‍⭐️**
@@ -52,6 +61,7 @@ $$
 - TODO
 - don't use normal but log normal, see https://www.investopedia.com/articles/investing/102014/lognormal-and-normal-distribution.asp
 - use the right data for the use case, prices for luxury houses come from a different distribution than prices for most "common" houses
+- TODO same currency, format issues, ...
 
 **What are the methods for solving linear regression do you know? ‍⭐️**
 
@@ -74,6 +84,11 @@ Approximation of the *true* gradient. Instead of using the full training data, w
 
 **Which metrics for evaluating regression models do you know? 👶**
 
+- MSE
+- RMSE
+- R^2 and adjusted R^2
+- error residual plots
+
 **What are MSE and RMSE? 👶**
 
 - Mean Square Error and Root Mean Square Error
@@ -89,7 +104,11 @@ Our goal is to model the true distribution of a given dataset. However, any data
 Measurable: Observe loss functions / objective function, metrics like accuracy, precision, etc.
 Subjective: evaluate output (e.g. in image generation), conduct user studies
 
+- Leave one group out cross validation
+
 **Why do we need to split our data into three parts: train, validation, and test? 👶**
+
+TODO: sampling bias
 
 We need to split our data because we do not want to overfit out model. It is possible to overfit it by the model parameters or by the choosen hyperparameters. Therefore, we need a training *and* validation dataset to be resilient against both. We use the test set to evaluate the final performance of the model choice, which is (more or less) independent of the training and validation data.
 
@@ -272,6 +291,10 @@ TODO
 When the data is imbalanced because Precision is not affected by it.
 
 **What do we do with categorical variables? ‍⭐️**
+
+- model learns natural order: weiblich doppelt so geschlechtigt wie männlich
+- 
+
 **Why do we need one-hot encoding? ‍⭐️**
 
 TOOD, one hot encoding, TODO why
@@ -281,11 +304,11 @@ TOOD, one hot encoding, TODO why
 **What happens to our linear regression model if we have three columns in our data: x, y, z  —  and z is a sum of x and y? ‍⭐️**
 
 $$X$$ will not be fully ranked, TODO.
+1. Inverting $$X^T X$$ becomes numerically difficult or inaccurate.
 
 
 **What happens to our linear regression model if the column z in the data is a sum of columns x and y and some random noise? ‍⭐️**
 
-1. Inverting $$X^T X$$ becomes numerically difficult or inaccurate.
 2. Small changes in the model parameters can result in large changes in the prediction
 2. Interpreting the model's parameters becomes undefined, because we cannot change one feature only while fixing all other paramters.
 
@@ -354,17 +377,16 @@ The effect of one unit change in the variable on the prediction while fixing all
 
 **If a weight for one variable is higher than for another  —  can we say that this variable is more important? ‍⭐️**
 
-A higher weight has a higher contribution to the prediction. However, both weights could be important for the prediction.
+if normalized: yes, A higher weight has a higher contribution to the prediction. However, both weights could be important for the prediction.
+if not: then not.
+
 
 **When do we need to perform feature normalization for linear models? When it’s okay not to do it? ‍⭐️**
 
-L1 when not much data is available.
+only if we have measures. for decision trees and regression
 
-TODO
 
 ## Feature selection
-
-TODO 
 
 **What is feature selection? Why do we need it? 👶**
 
@@ -379,9 +401,9 @@ TODO
 **Which feature selection techniques do you know? ‍⭐️**
 
 - L1 Regularization
-- PCA
 - Greedy elimination: TODO
 - Recursive feature elimination: TODO
+- Genetic Algorithms
 - TODO metrics like ... (see bachelor thesis)
 
 **Can we use L1 regularization for feature selection? ‍⭐️**
@@ -393,23 +415,97 @@ Yes, because the "edges" of a L1 norm lie on the axis, L1 regularization favors 
 No, L2 regularization favours smaller values over larger one, but does not make it sparse.
 
 ## Decision trees
-What are the decision trees? 👶
-How do we train decision trees? ‍⭐️
-What are the main parameters of the decision tree model? 👶
-How do we handle categorical variables in decision trees? ‍⭐️
-What are the benefits of a single decision tree compared to more complex models? ‍⭐️
-How can we know which features are more important for the decision tree model? ‍⭐️
+
+**What are the decision trees? 👶**
+
+Predictive model for classification and regression
+
+**How do we train decision trees? ‍⭐️**
+
+Greedy algorithm: Which variable split the tree best? 
+
+Information Gain
+
+$$
+H(T) = I_E(p_1, \ldots, p_J) = -\sum_{i=1}^J p_i \log_2 p_i
+$$
+
+where $$p_i$$ is the fraction of the parents in the child nodes
+
+$$
+\mathrm{IG}(T, a) = H(T) - H(T|a) = -\sum_{i=1}^J p_i \log_2 p_i - \sum_a p(a) \sum_{i=1}^J - \mathrm{Pr}(i|a) \log_2 \mathrm{Pr}(i|a)
+$$
+
+When do we stop?
+
+
+**What are the main parameters of the decision tree model? 👶**
+
+Each edge has a specific splitting condition.
+
+**How do we handle categorical variables in decision trees? ‍⭐️**
+
+Categorical variables are supported by decision trees. 
+
+**What are the benefits of a simple decision tree compared to more complex models? ‍⭐️**
+
+- Simplicity and interpretability: simple to understand and simple to visualize. Convincing method for non-experts. That also means it is easy to understand, how a result is achieved (white box model)
+- Numerical and categorical data
+- no assumption on the data (independence, noise within the data, ...)
+- in-build feature selection. 
+
+**How can we know which features are more important for the decision tree model? ‍⭐️**
+
+TODO
 
 ## Random forest
-What is random forest? 👶
-Why do we need randomization in random forest? ‍⭐️
-What are the main parameters of the random forest model? ‍⭐️
-How do we select the depth of the trees in random forest? ‍⭐️
-How do we know how many trees we need in random forest? ‍⭐️
-Is it easy to parallelize training of a random forest model? How can we do it? ‍⭐️
-What are the potential problems with many large trees? ‍⭐️
-What if instead of finding the best split, we randomly select a few splits and just select the best from them. Will it work? 🚀
-What happens when we have correlated features in our data? ‍⭐️
+
+**What is random forest? 👶**
+
+Classification/Regression technique that consists of multiple uncorrelated decision trees. For evaluation, we evaluate every decision tree and choose the most selected class of all.
+
+**Why do we need randomization in random forest? ‍⭐️**
+
+Otherwise, all decision tree will learn the same splits and we would get the same results as one decision tree only.
+
+**What are the main parameters of the random forest model? ‍⭐️**
+
+Model parameters: splits of the trees of each decision tree.
+
+Hyper parameters: bootstrap sample size $$n$$ for bagging, number of random features $$m \ll M$$
+
+**How do we select the depth of the trees in random forest? ‍⭐️**
+
+- Method 1: fully build trees
+- Method 2: ???
+
+**How do we know how many trees we need in random forest? ‍⭐️**
+
+- Too few: Some observation might not be considered because there was not any tree that used it (remember that we only use $$n \ll N$$ samples for each tree). The same applies for the features. If we use too few trees, then we might miss some features entirely. The second case is less likely because we select the features at each node and we have a much higher probability that we sample from every feature.
+- Too many: According to [this](http://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm#remarks) source, random forest don't overfit or only do so with very noisy data. You may want to use the out-of-bag (OOB) error rate to determine the right numbers of trees.
+
+**Is it easy to parallelize training of a random forest model? How can we do it? ‍⭐️**
+
+Yes, every decision tree is independent. We simply select $$n$$ data and $$m$$ features and train the decision tree.
+
+**What are the potential problems with many large trees? ‍⭐️**
+
+TODO
+
+- Overfitting (cotroversial)
+- ???
+
+**What if instead of finding the best split, we randomly select a few splits and just select the best from them. Will it work? 🚀**
+
+TODO
+
+I suppose?
+
+**What happens when we have correlated features in our data? ‍⭐️**
+
+TODO 
+
+Should be fine. We don't have any assumptions on the data.
 
 ## Gradient boosting
 What is gradient boosting trees? ‍⭐️
@@ -422,8 +518,18 @@ How do you approach tuning parameters in XGBoost or LightGBM? 🚀
 How do you select the number of trees in the gradient boosting model? ‍⭐️
 
 ## Parameter tuning
-Which parameter tuning strategies (in general) do you know? ‍⭐️
-What’s the difference between grid search parameter tuning strategy and random search? When to use one or another? ‍⭐️
+
+**Which parameter tuning strategies (in general) do you know? ‍⭐️**
+
+- Expert knowledge / "PhD student": choose the parameters according to your knowledge or delegate the task to a PhD student
+- Grid search: go through every combination of parameters where each parameter is one axis.
+- Random search: Choose random values from the right range. This technique performs better than it sounds like because many hyper parameters do not have a strong contribution to the end result and we don't waste much time testing them.
+- Baysian Optimization: probabilistic technique that "cleverly" guesses parameter sets. TODO
+- Hypergradient Descent: Treat the learning rate as a variable and perform a SGD step on it as well. This results in a very interesting algorithm.
+
+**What’s the difference between grid search parameter tuning strategy and random search? When to use one or another? ‍⭐️**
+
+If we know that every hyperparameter is essential, training of the model is short or the number of hyperparameters is small, then we can invest the time and perform grid search. However, if the number of hyper parameters are large or the training of the model takes much time, then I would use random search.
 
 ## Neural networks
 
@@ -461,14 +567,14 @@ Sigmoid is defined as $$\sigma(x) = \frac{1}{1 + \exp(-x)}$$ and it's range is $
 
 ReLU is another activation function whose range is $$[0, \infty)$$ in contrast to the range of the sigmoid $$(0, 1)$$ or tanh $$(-1, 1)$$. That means, gradients can grow and we can counteract the vanishing gradients problem. Even though it is not differentiable at $$x = 0$$, in practice we can still use it. 
 
-$$\mathrm{ReLU}(x) = \max{0, x}$$
+$$\mathrm{ReLU}(x) = \max(0, x)$$
 
 **How we can initialize the weights of a neural network? ‍⭐️**
 
 - randomly (uniform): potential problem of vanishing / exploding gradients
 - Xavier’s random weight initialization: solves this problem
 
-For ReLU: Sample weights from $$\mathcal{N}(0, 1)$$ and multiply it with $$\sqrt{\frac{2}{m}}}$$ where $$m_i$$ is the number of inputs for its layer $$i$$
+For ReLU: Sample weights from $$\mathcal{N}(0, 1)$$ and multiply it with $$\sqrt{\frac{2}{m}}$$ where $$m_i$$ is the number of inputs for its layer $$i$$
 
 **What if we set all the weights of a neural network to 0? ‍⭐️**
 
@@ -485,7 +591,7 @@ TODO: write more about dropout
 
 **What is backpropagation? How does it work? Why do we need it? ‍⭐️**
 
-Because the optimization problem for neural networks is very difficult, we cannot find an analytical soltuion to it. Therefore, we need iterative methods to find a (local) optimium instead. Many of these mehtods (SGD, ADAM, ...) require that the neural network is differentiable and that we can calculate the gradient of it. To calculate the gradient, we use the Backpropagation algorithm, which works very well, as long as all parts of the neural network are differentiable (or nearly differentiable, see ReLU).
+Since the optimization problem for neural networks is very difficult, we cannot find an analytical soltuion to it. Therefore, we need iterative methods to find a (local) optimium instead. Many of these mehtods (SGD, ADAM, ...) require that the neural network is differentiable and that we can calculate the gradient of it. To calculate the gradient, we use the Backpropagation algorithm, which works very well, as long as all parts of the neural network are differentiable (or nearly differentiable, see ReLU).
 
 **Which optimization techniques for training neural nets do you know? ‍⭐️**
 
@@ -498,16 +604,16 @@ Because the optimization problem for neural networks is very difficult, we canno
 1. Specify batch size $$M$$
 2. Specify learning rate $$\alpha_k$$ for iteration $$k$$
 3. Aggregate gradients $$G_{k,m}$$ of our neural network using $$M$$ training samples only (instead of the full batch)
-4. Update optimization variable
+4. Update optimization variable 
 
 $$
-w_{k+1} = w_k - \alpha_k \sum_{m=1}^M G(w_; \{x_m, y_m\})
+w_{k+1} = w_k - \alpha_k \sum_{m=1}^M G(w_, \{x_m, y_m\})
 $$
 
 **What’s the learning rate? 👶**
-What happens when the learning rate is too large? Too small? 👶
+**What happens when the learning rate is too large? Too small? 👶**
 
-also known as step size. It defines "how big" of an optimization step we want to take. A large learning rate can accelerate the learning but we might miss certain optima. On the other hand, a smaller learning rate slows down the training.
+It is also known as step size. It defines "how big" of an optimization step we want to take. A large learning rate can accelerate the learning but we might miss certain optima. On the other hand, a smaller learning rate slows down the training.
 
 **How to set the learning rate? ‍⭐️**
 
@@ -539,17 +645,135 @@ Save weights of the model during training to be prepared against computation iss
 ???
 
 ## Neural networks for computer vision
-How we can use neural nets for computer vision? ‍⭐️
-What’s a convolutional layer? ‍⭐️
-Why do we actually need convolutions? Can’t we use fully-connected layers for that? ‍⭐️
-What’s pooling in CNN? Why do we need it? ‍⭐️
-How does max pooling work? Are there other pooling techniques? ‍⭐️
-Are CNNs resistant to rotations? What happens to the predictions of a CNN if an image is rotated? 🚀
-What are augmentations? Why do we need them? 👶What kind of augmentations do you know? 👶How to choose which augmentations to use? ‍⭐️
-What kind of CNN architectures for classification do you know? 🚀
-What is transfer learning? How does it work? ‍⭐️
-What is object detection? Do you know any architectures for that? 🚀
-What is object segmentation? Do you know any architectures for that? 🚀
+
+**How we can use neural nets for computer vision? ‍⭐️**
+
+One efficient way is to use "Convolutional Neural Networks" because they introduce structure into the network which reduces the model parameters. This results in better optimization. 
+
+**What’s a convolutional layer? ‍⭐️**
+
+Each layer learns (multiple) convolution kernels and applies them on the images. Instead of learning a full multiplication matrix, we only need to learn the weights for the kernel. Since we use a neural network, we don't have to find the right kernel ourselves.
+
+**Why do we actually need convolutions? Can’t we use fully-connected layers for that? ‍⭐️**
+
+In theory yes, but in practice we end up with a model with too many parameters and it becomes infeasable to train it.
+
+**What’s pooling in CNN? Why do we need it? ‍⭐️**
+**How does max pooling work? Are there other pooling techniques? ‍⭐️**
+
+Pooling is an operation that reduces the number of pixels at a given layer. For example, in 2x2 max pooling with window 2, we select the highest activation of each 2x2 grid.
+TODO: why and other pooling operations
+
+**Are CNNs resistant to rotations? What happens to the predictions of a CNN if an image is rotated? 🚀**
+
+Most likely, only the first few layers are resistent to rotations because we might find the right "rotated" kernel. However, in the deeper layers we have more specialized kernels and we are not resistent anymore. The predictions become inaccurate if an image is rotated (and wasn't part of the data augmentation)
+
+**What are augmentations? Why do we need them? 👶**
+
+- be more resistent against modifications on the image (as rotation, translation, scaling, inverting)
+- increase data size which results in better learning
+
+**What kind of augmentations do you know? 👶**
+
+- Rotation
+- Scaling
+- Axis inversion
+- Translation?
+
+**How to choose which augmentations to use? ‍⭐️**
+
+Depends on the use case of the neural network, the size of the dataset, available ressources, optimizer, domain knowledge
+
+**What kind of CNN architectures for classification do you know? 🚀**
+
+TODO, GoogLeNet
+
+**What is transfer learning? How does it work? ‍⭐️**
+
+For a given task, we don't retrain the whole model again but reuse parts of the model from a different but similar tasks. We can do this because we expect that the weights in the lower layers are similar to the ones that we would get, if we retrain everything. Moreover, for more specialized tasks, we don't have much data available and most likely, we could not learn these lower level features as good.
+
+**What is object detection? Do you know any architectures for that? 🚀**
+
+Input: Image, Output: List of objects in this image with a probability.
+Todo: architecture
+
+**What is object segmentation? Do you know any architectures for that? 🚀**
+
+Assign each pixel of the image to a given class.
+
+## Clustering
+
+**What is unsupervised learning? 👶**
+
+Learning without labels (generated by human supervision). It detecs patterns in the feature inputs and organizes them.
+
+**What is clustering? When do we need it? 👶**
+
+Group data into similar categories. We use it when we want to categorize data but don't have any reference data.
+
+**Do you know how K-means works? ‍⭐️**
+
+k-means is an instance of the Expectation Maximization Algorithm. Goal: Minimize the within-cluster sum of squares (WCSS), i.e. the variance
+
+$$
+\arg\min_S \sum_{i=1}^k \sum_{x \in S_i} \Vert x - \mu_i \Vert^2 = \sum_{i=1}^k |S_i| \mathrm{Var} S_i
+$$
+
+TODO equivalences
+
+**Lloyd's algorithm, naive k-means**
+
+Initialize $$\mu_1^1, \ldots, \mu_k^1$$. Either by choosing $$k$$ random samples as first means (forgy) or by assigning random clusters to the data set first (random partition)
+
+I. Assignment: For data set $$x$$, measure the distance to each mean $$\mu_i$$ and assign it to the cluster, whose distance is minimal to the respected $$\mu_i$$.
+
+$$
+S_i^t = \{ x_p \,\colon\, \Vert x_p - \mu_i^t \Vert \le \Vert x_p - \mu_j^t \Vert \forall 1 \le j \le k \}
+$$
+
+II. Update: Recalculate new means by taking the average of each cluster.
+
+$$
+\mu_i^{t+1} = \frac{1}{|S_i^t|} \sum_{x\in S_i^t} x_j
+$$
+
+**How to select K for K-means? ‍⭐️**
+
+Multiple options
+
+- (Cross-)Validation: Treat $$k$$ as an hyperparameter and evaluate the cost function (WCSS).
+- The silhouette method: measure of how close a data point is to data from its own cluster and to data from the other clusters. Then use  silhouette plots or the mea n silhouette.
+- Elbow method: TODO
+
+**What are the other clustering algorithms do you know? ‍⭐️**
+
+- Expectation Maximization: Generalization of k-means. Instead of "circles", we use Gaußian Models (with different means and variances) that will the cluster
+- k-medoids: Useful, if we use other distance measures than k-means, for example, provided by a distance matrix. Instead of calculating a mean for each cluster, we elect an "representative" for each cluster. 
+
+**Do you know how DBScan works? ‍⭐️**
+
+TODO
+
+**When would you choose K-means and when DBScan? ‍⭐️**
+
+- DBScan: when we don't use euclidean distances, when it is a challenge to determine $$k$$, when we have more complicated cluster shapes, when we are working with databases, when we have outliers
+- k-means: when we expect to have large distances between clusters, image segmentation
+
+## Dimensionality reduction
+
+**What is the curse of dimensionality? Why do we care about it? ‍⭐️**
+
+TODO
+
+**Do you know any dimensionality reduction techniques? ‍⭐️**
+
+- Johnson Lindenstrauß Lemma
+- Eigenvalue Decomposition
+- Singular Value Decomposition (Principal Component Analysis)
+
+**What’s singular value decomposition? How is it typically used for machine learning? ‍⭐️**
+
+TODO
 
 ## Text classification
 How can we use machine learning for text classification? ‍⭐️
@@ -566,20 +790,6 @@ If you have a sentence with multiple words, you may need to combine multiple wor
 Would you prefer gradient boosting trees model or logistic regression when doing text classification with embeddings? ‍⭐️
 How can you use neural nets for text classification? 🚀
 How can we use CNN for text classification? 🚀
-
-## Clustering
-What is unsupervised learning? 👶
-What is clustering? When do we need it? 👶
-Do you know how K-means works? ‍⭐️
-How to select K for K-means? ‍⭐️
-What are the other clustering algorithms do you know? ‍⭐️
-Do you know how DBScan works? ‍⭐️
-When would you choose K-means and when DBScan? ‍⭐️
-
-## Dimensionality reduction
-What is the curse of dimensionality? Why do we care about it? ‍⭐️
-Do you know any dimensionality reduction techniques? ‍⭐️
-What’s singular value decomposition? How is it typically used for machine learning? ‍⭐️
 
 ## Ranking and search
 What is the ranking problem? Which models can you use to solve them? ‍⭐️

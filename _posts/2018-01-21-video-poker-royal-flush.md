@@ -306,13 +306,13 @@ I think this table describes much better how much effort Josh might have to put 
 
 |p|n|
 |-|-|
-|1 %|232
-|10 %|2432
-|25 %|6640
-|50 %|15998
-|75 %|31996
-|90 %|53144
-|99 %|106288
+|1%|232
+|10%|2432
+|25%|6640
+|50%|15998
+|75%|31996
+|90%|53144
+|99%|106288
 
 ## Empirical Validation
 
