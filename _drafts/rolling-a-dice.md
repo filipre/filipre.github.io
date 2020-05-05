@@ -134,7 +134,7 @@ We can also calculate the cummulative probabilities $$\Pr(T \le t) = (1-p)^{t-1}
 For instance, you get a $$51.8\%$$ probability to roll a "six" in your first four tries. That is the reason why the game at the beginning is not in your favor.
 
 $$
-\mathbb{E} = 51.8\% \cdot (-100\,€) + 48.2\% \cdot 100\,€ = -0.36\,€
+\mathbb{E} = 51.8 \% \cdot (-100\,€) + 48.2 \% \cdot 100\,€ = -0.36\,€
 $$
 
 I also made some simple plots for both tables which extends them to 100 tries. Notice that the first graphic has a log-scale. Otherwise, all lines would be drawn on each other.
@@ -204,7 +204,7 @@ $$
 &= \exp \lim_{p \to 0^+} \frac{- \frac{1}{1-p}}{1} \\
 &= \exp \lim_{p \to 0^+} - \frac{1}{1-p} \\
 &= \exp(-1) \\
-&= \frac{1}{e} \approx 36.8%
+&= \frac{1}{e} \approx 36.8\%
 \end{aligned}
 $$
 
