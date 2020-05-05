@@ -4,13 +4,13 @@ title: "Expected Values are Misleading"
 date: 2020-05-01 11:20:00 +0900
 ---
 
-Assume someone challanges you for a dice rolling game. If you need 4 tries or less to roll a "six" you have to pay 10€ or else, you will receive 10€. You can play as often as you want to. Would you play it? Despite it's weird rules, it does not look too bad. For instance, you know that it takes 6 tries until you roll a "six" in average. Obviously, on some occasions it will take less than that. But, on other occasions it will take either 6 or more tries since things need to balance out again. Even better, in the game above you only have to make sure that you don't roll a six in the first four tries and as long as you win more often than you lose, you will make a nice profit, right?
+Assume someone challanges you for a dice rolling game. If you need 4 tries or less to roll a "six" you have to pay 10 € or else, you will receive 10 €. You can play as often as you want to. Would you play it? Despite it's weird rules, it does not look too bad. For instance, you know that it takes 6 tries until you roll a "six" in average. Obviously, on some occasions it will take less than that. But, on other occasions it will take either 6 or more tries since things need to balance out again. Even better, in the game above you only have to make sure that you don't roll a six in the first four tries and as long as you win more often than you lose, you will make a nice profit, right?
 
 Well for starters, if someone tries to do this or something similar in real life, you can always assume that it is a scam. But regardless of that fact, you would indeed lose about 36ct each game you play in the long run. Even though it takes 6 rolls in average, it is more likely that you only need 4 rolls than that you need more than that. It turns out that the average value (or more precisely, [expected value](https://en.wikipedia.org/wiki/Expected_value)) hides some important information from you because it aggregates a lot of things into one value only. In this blog post, I am going to show you how you can derive the same conclusion and how you can think about probabilities in general.
 
 ## The Expected Value of Winning
 
-In many games, we are dealing with a so called [Bernoulli experiment](https://en.wikipedia.org/wiki/Bernoulli_distribution). That means, there are only two possible outcomes: Rolling a six or not, flipping heads or tails, winning the lottery or not, etc. Assuming that getting outcome 1 has the probability $$0 \le p_1 \le 1$$, then hitting the other outcome 2 comes with the probability $$p_2 = 1-p_1$$. By taking the inverse $$\frac{1}{p_1}$$, we get the expected value of number of tries to get outcome 1 in the long run. That means, if we repeat a Bernoulli experiment over and over again and we keep track of whether we win or lose, then the average number of tries for outcome 1 is $$\frac{1}{p_1}$$. The table below shows some example events with their respected probabilities and expected values.
+In many games, we are dealing with a so called [Bernoulli experiment](https://en.wikipedia.org/wiki/Bernoulli_distribution). That means, there are only two possible outcomes: Rolling a six or not, flipping heads or tails, winning the lottery or not, etc. Assuming that getting outcome 1 has the probability $$0 < p_1 \le 1$$, then hitting the other outcome 2 comes with the probability $$p_2 = 1-p_1$$. If we repeat the experiment until we get a "success", then we arrive at a [geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution). By taking the inverse $$\frac{1}{p_1}$$, we get the expected value of the number of tries to get outcome 1 in the long run. That means, if we repeat the experiment over and over again and we keep track of whether we win or lose, then the average number of tries for outcome 1 is $$\frac{1}{p_1}$$. Mathematically, we are dealing with a [geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution). The table below shows some example events with their respected probabilities and expected values.
 
 |Event $$E$$|Probability $$p$$|Expectation $$\mathbb{E}$$|
 |-----|-----------|-----------|
@@ -30,7 +30,7 @@ $$
 \mathbb{E} = 1 + p \cdot 0 + (1-p) \mathbb{E} = 1 + (1-p) \mathbb{E} = 1 + \mathbb{E} - p \mathbb{E}
 $$
 
-Notice that $$\mathbb{E}$$ appears on both sides of the equation. Now, we just solve for $$\mathbb{E}$$ by rearranging the terms.
+Notice that $$\mathbb{E}$$ appears on both sides of the equation. To conclude, we just solve for $$\mathbb{E}$$ by rearranging the terms.
 
 $$
 \begin{aligned}
@@ -145,11 +145,18 @@ I also made some simple plots for both tables which extends them to 100 tries. N
 
 ## What the expected value doesn't want you to know
 
-TODO
+You may or may not find it suprising that even though it is more likely to have less than 5 tries to roll a "six", the expected value is *still* 6. Let's visualize each single summand in the expected value, namely $$(1-p)^{t-1} p \cdot t$$.
 
 ![weighted terms](../../assets/rolling-a-six/weighted_terms.png)
 
-TODO
+If we sum up every dot, we end up with the expected value $$\mathbb{E}$$ of course. On the $$t$$-axis, I also marked the expected value by a vertical line. That way, we can compare the left side of the line to the right side. By taking the sum from 1 until the line (also known as the integral) and comparing it to the sum from the line to $$\infty$$, the right hand side is larger than the left hand side. This is the reason why the expected value is sometimes higher than the "more likely" value. 
+
+|Event|Probability|$$1$$ to $$\mathbb{E}$$|$$\mathbb{E}+1$$ to $$\infty$$|$$\mathbb{E}$$|
+|-----|-----------|-------------------------|----------------------------|--------------|
+|Coin flip |$$ 50\%$$|$$ 1.0$$|$$ 1.0$$|$$ 2$$|
+|6-sided dice |$$ 17\%$$|$$ 2.0$$|$$ 4.0$$|$$ 6$$|
+|20-sided dice |$$ 5\%$$|$$ 5.3$$|$$ 14.7$$|$$ 20$$|
+|1 in 100 |$$ 1\%$$|$$ 26.4$$|$$ 73.6$$|$$ 100$$|
 
 ## Probablity of less than/equal "expected" tries
 
@@ -196,10 +203,11 @@ $$
 &\stackrel{\mathrm{H}}{=} \exp \lim_{p \to 0^+} \frac{\frac{\mathrm{d}}{\mathrm{d}p} \ln (1-p)}{\frac{\mathrm{d}}{\mathrm{d}p} p} \\
 &= \exp \lim_{p \to 0^+} \frac{- \frac{1}{1-p}}{1} \\
 &= \exp \lim_{p \to 0^+} - \frac{1}{1-p} \\
-&= \exp(-1) = \frac{1}{e} \approx 36.8%
+&= \exp(-1) \\
+&= \frac{1}{e} \approx 36.8%
 \end{aligned}
-
-TODO
-
 $$
 
+## Conclusion
+
+The gist is, if you repeat an exeriment (for example you play a certain board game) very often and you don't change your strategy in a given situation, then you should still rely on the expected value as it gives you a better estimation for your long term success. Even though smaller sequences are more likely, larger ones will pop up, hurt you and drag you down. However, if you only care about short term success or you can change your strategy throughout, then the expected value is misleading and not a good estimation since it is too pessimistic.
