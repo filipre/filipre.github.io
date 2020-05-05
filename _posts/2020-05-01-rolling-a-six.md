@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Expected Values are Misleading"
+title: "Probability of Rolling a Six"
 date: 2020-05-01 11:20:00 +0900
 ---
 
