@@ -52,7 +52,7 @@ $$
 \end{aligned}
 $$
 
-From school you may remember that we often drew (binary) trees when we visualized probabilities. They make it very easy to figure out certain events. We will use the following tree but this time, it has an "infinite" depth.
+From school you may remember that we often draw (binary) trees when we visualize probabilities. They make it very easy to figure out certain events. We will use the following tree but this time, it has an "infinite" depth.
 
 ![Binary Tree](../../assets/rolling-a-six/tree.png)
 
@@ -143,24 +143,9 @@ I also made some simple plots for both tables which extends them to 100 tries. N
 
 ![cpr](../../assets/rolling-a-six/cpr.png)
 
-## What the expected value doesn't want you to know
-
-You may or may not find it suprising that even though it is more likely to have less than 5 tries to roll a "six", the expected value is *still* 6. Let's visualize each single summand in the expected value, namely $$(1-p)^{t-1} p \cdot t$$.
-
-![weighted terms](../../assets/rolling-a-six/weighted_terms.png)
-
-If we sum up every dot, we end up with the expected value $$\mathbb{E}$$ of course. On the $$t$$-axis, I also marked the expected value by a vertical line. That way, we can compare the left side of the line to the right side. By taking the sum from 1 until the line (also known as the integral) and comparing it to the sum from the line to $$\infty$$, the right hand side is larger than the left hand side. This is the reason why the expected value is sometimes higher than the "more likely" value. 
-
-|Event|Probability|$$1$$ to $$\mathbb{E}$$|$$\mathbb{E}+1$$ to $$\infty$$|$$\mathbb{E}$$|
-|-----|-----------|-------------------------|----------------------------|--------------|
-|Coin flip |$$ 50\%$$|$$ 1.0$$|$$ 1.0$$|$$ 2$$|
-|6-sided dice |$$ 17\%$$|$$ 2.0$$|$$ 4.0$$|$$ 6$$|
-|20-sided dice |$$ 5\%$$|$$ 5.3$$|$$ 14.7$$|$$ 20$$|
-|1 in 100 |$$ 1\%$$|$$ 26.4$$|$$ 73.6$$|$$ 100$$|
-
 ## Probablity of less than/equal "expected" tries
 
-Last but not least, we look into the probability of having *less or equal than expected* tries for a given probability $$p$$, i.e. $$\Pr(T \le \mathbb{E})$$. We will see that it is always more than $$63.2\%$$ for *any* probability. By looking at the binary tree again, we see that
+Let's look into the probability of having *less or equal than "expected"* tries for a given probability $$p$$, i.e. $$\Pr(T \le \mathbb{E})$$. We will see that it is always more than $$63.2\%$$ for *any* probability. By looking at the binary tree again, we see that
 
 $$
 \begin{aligned}
@@ -208,6 +193,22 @@ $$
 \end{aligned}
 $$
 
+
+## What the expected value doesn't want you to know
+
+You may or may not find it suprising that even though it is more likely to have less than 5 tries to roll a "six", the expected value is *still* 6 and not less. Let's visualize each single summand in the expected value, namely $$(1-p)^{t-1} p \cdot t$$.
+
+![weighted terms](../../assets/rolling-a-six/weighted_terms.png)
+
+If we sum up every dot, we end up with the expected value $$\mathbb{E}$$ of course. As we can see on on the graph, it is not very symmetrical. Even though it is more likely to have less/euqal $$t \le \mathbb{E}$$ tries, their summands don't contribute as much to the expected value as the terms $$t > \mathbb{E}$$ after the expected value. That also means that you get punished by a high number (of tries) when you happen to need more than $$\mathbb{E}$$ tries. I summarized this observation in the following table:
+
+|Event|Probability|$$1$$ to $$\mathbb{E}$$|$$\mathbb{E}+1$$ to $$\infty$$|$$\mathbb{E}$$|
+|-----|-----------|-------------------------|----------------------------|--------------|
+|Coin flip |$$ 50\%$$|$$ 1.0$$|$$ 1.0$$|$$ 2$$|
+|6-sided dice |$$ 17\%$$|$$ 2.0$$|$$ 4.0$$|$$ 6$$|
+|20-sided dice |$$ 5\%$$|$$ 5.3$$|$$ 14.7$$|$$ 20$$|
+|1 in 100 |$$ 1\%$$|$$ 26.4$$|$$ 73.6$$|$$ 100$$|
+
 ## Conclusion
 
-The gist is, if you repeat an exeriment (for example you play a certain board game) very often and you don't change your strategy in a given situation, then you should still rely on the expected value as it gives you a better estimation for your long term success. Even though smaller sequences are more likely, larger ones will pop up, hurt you and drag you down. However, if you only care about short term success or you can change your strategy throughout, then the expected value is misleading and not a good estimation since it is too pessimistic.
+The gist is, if you repeat an exeriment (for example you play a certain board game) very often and you don't change your strategy in a given situation, then you should still rely on the expected value as it gives you a better estimation for your long term success. Even though smaller sequences are more likely, larger ones will pop up and hurt you. However, if you only care about a short term success or you can change your strategy throughout, then the expected value is misleading and not a good estimation since it is too pessimistic.
