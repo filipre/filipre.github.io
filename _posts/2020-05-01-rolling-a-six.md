@@ -212,3 +212,4 @@ If we sum up every dot, we end up with the expected value $$\mathbb{E}$$ of cour
 ## Conclusion
 
 The gist is, if you repeat an exeriment (for example you play a certain board game) very often and you don't change your strategy in a given situation, then you should still rely on the expected value as it gives you a better estimation for your long term success. Even though smaller sequences are more likely, larger ones will pop up and hurt you. However, if you only care about a short term success or you can change your strategy throughout, then the expected value is misleading and not a good estimation since it is too pessimistic.
+
