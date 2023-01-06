@@ -1,0 +1,6 @@
+baseURL = 'http://example.org/'
+disqusShortname = "renes-blog"
+enableEmoji = true
+languageCode = 'en-us'
+theme = 'ananke'
+title = "René's Blog"
