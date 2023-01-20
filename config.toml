@@ -1,6 +1,166 @@
 baseURL = 'http://example.org/'
-disqusShortname = "renes-blog"
-enableEmoji = true
 languageCode = 'en-us'
-theme = 'ananke'
-title = "René's Blog"
+theme = 'blist'
+title = 'My New Hugo Site'
+
+metaDataFormat = "yaml"
+
+[params]
+introPhoto = "/picture.jpg"
+introSubtitle = "26 y/o junior developer who enjoys social card games, blogging and painting"
+introTitle = "Hey! I'm Katheryn Fox"
+# logo = "/blist-logo.png"
+
+# Enable the darkmode toggle in header
+darkModeToggle = true
+# Enable search in header
+enableSearch = true
+
+# Option to customize the search parameters of a page
+# Below are the supported options; Note that including entire content
+# may slowdown the loading of search results
+# Title of page is included by default
+searchKeys = [
+  "tags",
+  "date",
+  "categories",
+  "summary",
+  "content",
+  "link",
+  "author",
+]
+
+# Custom copyright - optional
+copyright = "Copyright © 2021 - Katheryn Fox · All rights reserved"
+favicon = "/favicon.svg"
+
+# Color for the intro details and social links block, not applicable for dark mode
+# Supported values: Any color from TailwindCSS default colors
+# Reference: https://tailwindcss.com/docs/customizing-colors
+# ascentColor = "bg-blue-100"
+
+# The page bundle that is shown on the front page
+frontBundle = "blog"
+
+# Used to hide the post metadata such as posted date, reading time and word count
+# Can be used at site level or page level
+hideMeta = false
+
+# To hide "Other languages" option if the post is available in multiple languages
+# Can be used at site level or page level
+hideOtherLanguages = false
+
+# Add support for Table of contents
+# Can be added to a page level also in markdown frontmatter
+toc = true
+
+# Hides the thumbnail in post view
+# Thumbnails in home and blog pages will still be shown
+# This setting can also be in page's markdown file
+hidePageThumbnail = false
+
+[params.homepage.social]
+# Global params common for both languages
+description = "I work on everything coding and tweet developer memes"
+title = "Follow me"
+
+[[menu.main]]
+name = "Blog"
+url = "blog"
+weight = 1
+[[menu.main]]
+name = "About"
+url = "/about"
+weight = 2
+
+# # Comments system
+# [params.comments]
+#   # Supports disqus, giscus and utterances
+#   # Check hugo docs for setting up disqus
+#   system = "giscus"
+
+#   # Options for giscus, exclude hyphens
+#   repo = ""
+#   repoid = ""
+#   category = ""
+#   categoryid = ""
+#   mapping = ""
+#   strict = ""
+#   reactionsenabled = ""
+#   emitmetadata = ""
+#   inputposition = ""
+#   theme = ""
+
+#   # Options for utterances, exclude hyphens
+#   # repo = ""
+#   # issueterm = ""
+#   # theme = ""
+
+[[params.homepage.social.icons]]
+url = "https://twitter.com/"
+website = "twitter"
+[[params.homepage.social.icons]]
+url = "https://linkedin.com/in/"
+website = "linkedin"
+[[params.homepage.social.icons]]
+url = "https://www.xing.com/profile/"
+website = "xing"
+[[params.homepage.social.icons]]
+url = "https://t.me/"
+website = "telegram"
+[[params.homepage.social.icons]]
+url = "https://github.com/"
+website = "github"
+[[params.homepage.social.icons]]
+url = "https://www.buymeacoffee.com/"
+website = "buymeacoffee"
+[[params.homepage.social.icons]]
+url = "https://medium.com/"
+website = "medium"
+[[params.homepage.social.icons]]
+url = "https://reddit.com/"
+website = "reddit"
+[[params.homepage.social.icons]]
+url = "https://dribbble.com/"
+website = "dribbble"
+[[params.homepage.social.icons]]
+url = "https://stackoverflow.com/"
+website = "stackoverflow"
+[[params.homepage.social.icons]]
+url = "https://forum.xda-developers.com/"
+website = "xda"
+[[params.homepage.social.icons]]
+url = "https://tiktok.com"
+website = "tiktok"
+[[params.homepage.social.icons]]
+url = "https://scholar.google.com/"
+website = "googlescholar"
+[[params.homepage.social.icons]]
+url = "https://joinmastodon.org"
+website = "mastodon"
+[[params.homepage.social.icons]]
+url = "https://youtube.com"
+website = "youtube"
+[[params.homepage.social.icons]]
+url = "https://instagram.com"
+website = "instagram"
+[[params.homepage.social.icons]]
+url = "https://facebook.com"
+website = "facebook"
+[[params.homepage.social.icons]]
+url = "https://behance.net"
+website = "behance"
+
+# [build]
+# writeStats = true
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+# syntax highlight settings
+[markup]
+[markup.highlight]
+style = "dracula"
+[markup.goldmark.renderer]
+# Enable to include inline HTML
+unsafe = true
