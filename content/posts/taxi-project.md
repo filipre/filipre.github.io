@@ -1,7 +1,10 @@
 ---
-layout: post
-title: "Identifying Return Trips in NY's Taxi Data Set"
-date: 2018-01-24 18:50:00 +0900
+title: "Taxi Project"
+date: 2024-01-13
+description: "todo"
+type: "post"
+tags: ["coding", "big data"]
+draft: true
 ---
 
 - Introduction & Problem description

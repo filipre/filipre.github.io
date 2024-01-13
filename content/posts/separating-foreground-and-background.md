@@ -1,6 +1,6 @@
 ---
 title: "Separating the Foreground and Background of a Video"
-date: 2019-03-01
+date: 2019-03-17
 type: "post"
 tags: ["math", "university"]
 weight: 2

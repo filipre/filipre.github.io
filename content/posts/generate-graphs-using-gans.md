@@ -1,6 +1,6 @@
 ---
 title: "Generate Graphs Using GANs"
-date: 2019-04-01
+date: 2019-04-02
 type: "post"
 tags: ["university", "ai"]
 ---

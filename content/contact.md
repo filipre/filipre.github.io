@@ -3,7 +3,7 @@ title: "Contact"
 type: "page"
 ---
 
-You can best reach me on [LinkedIn](https://www.linkedin.com/in/rene-filip/) and by [e-mail](mailto:renefilip[at]mail[dot]com).
+You can find me on [Github](https://github.com/filipre) and reach me on [LinkedIn](https://www.linkedin.com/in/rene-filip/) or by [e-mail](mailto:renefilip[at]mail[dot]com).
 
 ## Impressum
 

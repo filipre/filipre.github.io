@@ -1,15 +1,10 @@
-baseURL = "https://filipre.github.io/"
-defaultContentLanguage = "en"
-languageCode = "en"
-
-title = "René's Blog"
-
-theme = "gokarna"
-
-# Automatically generate robots.txt
-enableRobotsTXT = true
-
-enableEmoji = true
+baseURL = "https://filipre.github.io/" 
+defaultContentLanguage = "en" 
+enableEmoji = true 
+enableRobotsTXT = true # Automatically generate robots.txt
+languageCode = "en" 
+theme = "gokarna" 
+title = "René's Blog" 
 
 [menu]
 [[menu.main]]
@@ -53,7 +48,7 @@ avatarSize = ""
 description = "Random articles and thoughts"
 
 # Accent color is displayed when you hover over <a> tags
-accentColor = "#FF4D4D"
+accentColor = "#E8888A" # "#F2A3B3" # "#e848b0" # "#FF4D4D"
 
 # Display "back to top" button on posts
 ShowBackToTopButton = true
@@ -103,3 +98,8 @@ dateFormat = "2 January, 2006"
 # togglePreviousAndNextButtons = "true"
 
 enableRobotsTXT = true
+
+socialIcons = [
+  {name = "linkedin", url = "https://www.linkedin.com/in/rene-filip/"},
+  {name = "github", url = "https://github.com/filipre"},
+]

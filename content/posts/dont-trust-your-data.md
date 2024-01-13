@@ -1,6 +1,6 @@
 ---
 title: "Do Not Blindly Trust Your Data"
-date: 2018-08-01
+date: 2018-08-05
 # description: "A blog post"
 type: "post"
 tags: ["university"]
