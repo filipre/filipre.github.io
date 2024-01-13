@@ -21,20 +21,12 @@ jobs:
         with:
           hugo-version: "0.119.0"
 
-      - name: TEMP
-        run: ls -al
-
       - name: Build
         run: hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.TOKEN }}
-          external_repository: filipre/filipre.github.io
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          #   keep_files: true
-          user_name: filipre
-          user_email: renefilip@mail.com
-          publish_branch: main
           cname: rene.pub
