@@ -1,0 +1,1 @@
+- app that calculates the best probability for a tetris, similar to chess
