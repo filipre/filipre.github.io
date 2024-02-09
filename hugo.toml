@@ -91,7 +91,7 @@ metaKeywords = ["blog", "gokarna", "hugo"]
 showPostsOnHomePage = "popular"
 
 # Footer text
-# footer = "The Marauders"
+footer = "René Filip"
 
 dateFormat = "2 January, 2006"
 
@@ -102,4 +102,5 @@ enableRobotsTXT = true
 socialIcons = [
   {name = "linkedin", url = "https://www.linkedin.com/in/rene-filip/"},
   {name = "github", url = "https://github.com/filipre"},
+  {name = "email", url = "mailto:renefilip[at]mail[dot]com"},
 ]
