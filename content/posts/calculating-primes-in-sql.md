@@ -3,7 +3,8 @@ title: 'Calculating Prime Numbers in SQL'
 date: 2024-01-28T21:51:39+01:00
 description: "Implementing the Sieve of Eratosthenes in SQL using Recursive Expressions"
 type: "post"
-tags: ["sql", "math", "interview"]
+tags: ["sql", "math", "interview", "algorithms"]
+weight: 2
 ---
 
 Ever needed to calculate prime numbers in a SQL database? No? Here is the query anyways:

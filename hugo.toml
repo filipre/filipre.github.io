@@ -104,3 +104,6 @@ socialIcons = [
   {name = "github", url = "https://github.com/filipre"},
   {name = "email", url = "mailto:renefilip[at]mail[dot]com"},
 ]
+
+# [markup.goldmark.renderer]
+# unsafe = true # Allow HTML in md files
