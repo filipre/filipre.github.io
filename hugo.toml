@@ -1,14 +1,14 @@
 baseURL = "https://filipre.github.io/" 
 defaultContentLanguage = "en" 
 enableEmoji = true 
-enableRobotsTXT = true # Automatically generate robots.txt
+enableRobotsTXT = true
 languageCode = "en" 
 theme = "gokarna" 
 title = "René's Blog" 
+relativeURLs = true
 
 [menu]
 [[menu.main]]
-# Unique identifier for a menu item
 identifier = "posts"
 name = "Posts"
 post = ""
@@ -30,80 +30,40 @@ pre = "<span data-feather='mail'></span>"
 url = "/contact"
 weight = 3
 
-# [[menu.main]]
-# identifier = "github"
-# url = "https://github.com"
-# # We use feather-icons: https://feathericons.com/
-# pre = "<span data-feather='github'></span>"
-# weight = 4
-
 [params]
-# URL for the avatar on homepage
 avatarURL = "/images/avatar.png"
-
 # Choose one of size-xs, size-s, size-m, size-l & size-xl. (Default: size-m)
 avatarSize = ""
-
-# Description to display on homepage
 description = "Random articles and thoughts"
-
-# Accent color is displayed when you hover over <a> tags
 accentColor = "#E8888A" # "#F2A3B3" # "#e848b0" # "#FF4D4D"
-
-# Display "back to top" button on posts
 ShowBackToTopButton = true
-
-# You can use this to inject any HTML in the <head> tag.
-# Ideal usecase for this is to import custom js/css or add your analytics snippet
+# KaTeX loading and configuration
 customHeadHTML = '''
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <!-- The loading of KaTeX is deferred to speed up page rendering -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
-    <!-- To automatically render math in text elements, include the auto-render extension: -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         renderMathInElement(document.body, {
-          // customised options
-          // • auto-render specific keys, e.g.:
           delimiters: [
             {left: '$$', right: '$$', display: true},
             {left: '$', right: '$', display: false},
           ],
-          // • rendering keys, e.g.:
           throwOnError : false
         });
       });
     </script>
-  '''
-
-# customFooterHTML = '''
-#     <small><a href="/impressum">Impressum</a></small>
-# '''
-
-# Keywords relevant for SEO
+'''
 metaKeywords = ["blog", "gokarna", "hugo"]
-
-# If you want to display posts on the homepage, the options are
-# "popular" (order posts by weight), "recent" (order posts by date)
-# or "" (do not display, default option)
 showPostsOnHomePage = "popular"
-
-# Footer text
+numberPostsOnHomePage = 10
 footer = "René Filip"
-
 dateFormat = "2 January, 2006"
-
-# togglePreviousAndNextButtons = "true"
-
-enableRobotsTXT = true
-
 socialIcons = [
   {name = "linkedin", url = "https://www.linkedin.com/in/rene-filip/"},
   {name = "github", url = "https://github.com/filipre"},
   {name = "email", url = "mailto:renefilip[at]mail[dot]com"},
 ]
 
-# [markup.goldmark.renderer]
-# unsafe = true # Allow HTML in md files
+[markup.goldmark.renderer]
+unsafe = true # Allow HTML in md files

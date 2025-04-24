@@ -16,7 +16,6 @@ Zinnienstraße 21\
 
 ### Kontakt
 E-Mail: renefilip (at) mail (dot) com\
-Telefon: +49 1590 2237351\
 Website: https://rene.pub/
 
 ### Bei redaktionellen Inhalten
@@ -24,5 +23,3 @@ Verantwortlich nach § 55 Abs.2 RStV\
 René Filip c/o Schöppl\
 Zinnienstraße 21\
 80939 München
-
-

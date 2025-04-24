@@ -117,52 +117,57 @@ Notice that none of the terms are differentiable, so simple gradient descent or 
 
 Instead, we use ADMM. For now, I won't go into details how to derive these update rules but the idea is to introduce a Lagrangian Multiplier $Y$ to enforce $A+B=M$ and optimize over $A$, $B$, $M$ and finally $Y$ in an alternating way. Each optimization problem can be reformulated using the $\operatorname{prox}$ operator and the $\operatorname{prox}$ of the Nuclear norm, the L1 norm and the indicator function are well known. Please have a look at the Python code to see the update iteration. We reformulate the problem as the Augmented Lagrangian.
 
-$$\begin{aligned}
-\min_{A, B, M} \max_{Y} \mathcal{L}(A, B, M; Y)
-= &\lVert A \rVert_\mathrm{nuc}
-+ \lVert B \rVert_1
-+ \delta\{\lVert M - Z\rVert_{\mathrm{fro}} \le \epsilon\}  \\
-&+ \langle A+B-M, Y \rangle
-+ \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2
-\end{aligned}$$
+$$
+\begin{align*}
+\min_{A, B, M} \max_{Y} \mathcal{L}(A, B, M; Y) =& \lVert A \rVert_\mathrm{nuc} + \lVert B \rVert_1 + \delta\\{\lVert M - Z\rVert_{\mathrm{fro}} \le \epsilon\\} \\\\
+&+ \langle A+B-M, Y \rangle + \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2
+\end{align*}
+$$
 
 ### Optimization over A: Low Rank Matrix
 
-$$\begin{aligned}
-A^{k+1} &\in \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle + \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2 \\
-&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} ( 2 \langle \tfrac{1}{\rho} Y^k, A \rangle + \langle A+B^k-M^k, A+B^k-M^k \rangle ) \\
-&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \langle A+B-M^k+\tfrac{1}{\rho}Y^k, A+B-M^k+\tfrac{1}{\rho}Y^k \rangle \\
-&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \lVert A - (M^k - B^k - \tfrac{1}{\rho} Y^k) \rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\lVert \cdot \rVert_\mathrm{nuc} / \rho}(\underbrace{M^k - B^k - \tfrac{1}{\rho} Y^k}_X ) \\
-&= U \operatorname{diag} ( \{ (\sigma_i - \tfrac{1}{\rho})_+ \} ) V^T \ \text{where} \ X = U \Sigma V^T
-\end{aligned}$$
+$$
+\begin{align*}
+A^{k+1} &\in \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \langle Y^k, A \rangle + \frac{\rho}{2} \lVert A+B^k-M^k \rVert_\mathrm{fro}^2 \\\\
+&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} ( 2 \langle \tfrac{1}{\rho} Y^k, A \rangle + \langle A+B^k-M^k, A+B^k-M^k \rangle ) \\\\
+&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \langle A+B-M^k+\tfrac{1}{\rho}Y^k, A+B-M^k+\tfrac{1}{\rho}Y^k \rangle \\\\
+&= \argmin_{A} \lVert A \rVert_\mathrm{nuc} + \frac{\rho}{2} \lVert A - (M^k - B^k - \tfrac{1}{\rho} Y^k) \rVert_\mathrm{fro}^2 \\\\
+&= \operatorname{prox}
+\end{align*}
+$$
 
-<!-- $$U \diag(\{ (\sigma_i - \frac{1}{\rho})_+ \}) V^T$$ -->
+
+&= \operatorname{prox}_{\lVert \cdot \rVert_\mathrm{nuc} / \rho}(\underbrace{M^k - B^k - \tfrac{1}{\rho} Y^k}_X ) \\\\
+&= U \operatorname{diag} ( \\{ (\sigma_i - \tfrac{1}{\rho})_+ \\} ) V^T \\ \text{where} \\ X = U \Sigma V^T
 
 
 ### Optimization over B: Sparse Matrix
 
-$$\begin{aligned}
-B^{k+1} &\in \argmin_{B} \lambda \lVert B \rVert_1 + \langle Y^k, B \rangle + \frac{\rho}{2} \lVert A^{k+1}+B-M^k \rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\lVert \cdot \rVert_1 \lambda / \rho} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k) \\
-\operatorname{vec} B^{k+1} &= \operatorname{prox}_{\lVert \operatorname{vec}(\cdot) \rVert_1 \lambda / \rho} (  \underbrace{\operatorname{vec} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k)}_{x}) \\
-&= b \in \mathbb{R}^{n_1 n_2} \ \colon \ b_i =
+$$
+\begin{align*}
+B^{k+1} &\in \argmin_{B} \lambda \lVert B \rVert_1 + \langle Y^k, B \rangle + \frac{\rho}{2} \lVert A^{k+1}+B-M^k \rVert_\mathrm{fro}^2 \\\\
+&= \operatorname{prox}_{\lVert \cdot \rVert_1 \lambda / \rho} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k) \\\\
+\operatorname{vec} B^{k+1} &= \operatorname{prox}_{\lVert \operatorname{vec}(\cdot) \rVert_1 \lambda / \rho} (  \underbrace{\operatorname{vec} (M^k - A^{k+1} - \tfrac{1}{\rho} Y^k)}_{x}) \\\\
+&= b \in \mathbb{R}^{n_1 n_2} \\ \colon \\ b_i =
 \begin{cases}
-x_i + \tfrac{\lambda}{\rho} &\text{if } x_i < -\tfrac{\lambda}{\rho} \\
-0 &\text{if } x_i \in [ -\tfrac{\lambda}{\rho}, \tfrac{\lambda}{\rho} ] \\
+x_i + \tfrac{\lambda}{\rho} &\text{if } x_i < -\tfrac{\lambda}{\rho} \\\\
+0 &\text{if } x_i \in [ -\tfrac{\lambda}{\rho}, \tfrac{\lambda}{\rho} ] \\\\
 x_i - \tfrac{\lambda}{\rho} &\text{if } x_i > \tfrac{\lambda}{\rho}
 \end{cases}
-\end{aligned}$$
+\end{align*}
+$$
 
 ### Optimization over M: Reconstruction
 
-$$\begin{aligned}
-M^{k+1} &\in \argmin_M \delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \} - \langle Y^k, M \rangle + \frac{\rho}{2} \lVert A^{k+1} + B^{k+1} - M\rVert_\mathrm{fro}^2 \\
-&= \operatorname{prox}_{\delta \{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \} / \rho } (\underbrace{A^{k+1} + B^{k+1} + \tfrac{1}{\rho} Y^k}_X) \\
-&= \operatorname{proj}_{C} (X) \ \text{and} \ C=\{M \in \mathbb{R}^{n_1 \times n_2} \ \colon \ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon\} \\
-\operatorname{vec} M^{k+1} &= \operatorname{proj}_{C'} (\operatorname{vec} X) \ \text{and} \ C'= \{ m \in \mathbb{R}^{n_1 n_2} \ \colon \ \lVert m - \operatorname{vec}Z \rVert_2 \le \epsilon\} = \overline{B}(\operatorname{vec}{Z}, \epsilon)\\
-&= \operatorname{vec}Z + \frac{\epsilon}{\max\{ \lVert \operatorname{vec}X - \operatorname{vec}Z \rVert_2, \epsilon \}} (\operatorname{vec} X - \operatorname{vec} Z)
-\end{aligned}$$
+$$
+\begin{align*}
+M^{k+1} &\in \argmin_M \delta \\{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \\} - \langle Y^k, M \rangle + \frac{\rho}{2} \lVert A^{k+1} + B^{k+1} - M\rVert_\mathrm{fro}^2 \\
+&= \operatorname{prox}_{\delta \\{ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon \\} / \rho } (\underbrace{A^{k+1} + B^{k+1} + \tfrac{1}{\rho} Y^k}_X) \\
+&= \operatorname{proj}_{C} (X) \\ \text{and} \\ C=\\{M \in \mathbb{R}^{n_1 \times n_2} \\ \colon \\ \lVert M - Z \rVert_\mathrm{fro} \le \epsilon\\} \\
+\operatorname{vec} M^{k+1} &= \operatorname{proj}_{C'} (\operatorname{vec} X) \\ \text{and} \\ C'= \{ m \in \mathbb{R}^{n_1 n_2} \\ \colon \\ \lVert m - \operatorname{vec}Z \rVert_2 \le \epsilon\} = \overline{B}(\operatorname{vec}{Z}, \epsilon)\\
+&= \operatorname{vec}Z + \frac{\epsilon}{\max \\{ \lVert \operatorname{vec}X - \operatorname{vec}Z \rVert_2, \epsilon \\}} (\operatorname{vec} X - \operatorname{vec} Z)
+\end{align*}
+$$
 
 ### Dual Ascend Step for Y
 
